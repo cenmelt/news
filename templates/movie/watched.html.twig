@@ -1,0 +1,16 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MovieController!{% endblock %}
+
+{% block body %}
+    <h2>Your Watched Movies:</h2>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}">
+                <strong>{{ movie.title }}</strong>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
