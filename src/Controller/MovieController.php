@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\WatchedMovie;
+use App\Entity\MovieWatched;
 use App\Service\TmdbService;
 
 class MovieController extends AbstractController
@@ -38,22 +38,26 @@ class MovieController extends AbstractController
     {
         $title = $request->query->get('title');
         $posterPath = $request->query->get('poster_path');
-
-        $movie = new WatchedMovie();
+    
+        if (!$id) {
+            throw new \InvalidArgumentException("Movie ID cannot be null or invalid.");
+        }
+    
+        $movie = new MovieWatched();
         $movie->setMovieId($id);
         $movie->setTitle($title);
         $movie->setPosterPath($posterPath);
-
+    
         $this->em->persist($movie);
         $this->em->flush();
-
+    
         return $this->redirectToRoute('movie_search');
     }
 
     #[Route('/watched', name: 'movie_watched_list')]
     public function watchedList(): Response
     {
-        $movies = $this->em->getRepository(WatchedMovie::class)->findAll();
+        $movies = $this->em->getRepository(MovieWatched::class)->findAll();
 
         return $this->render('movie/watched.html.twig', [
             'movies' => $movies,
