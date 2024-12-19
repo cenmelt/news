@@ -1,0 +1,24 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MovieController!{% endblock %}
+
+{% block body %}
+    <form method="get" action="{{ path('movie_search') }}">
+        <input type="text" name="query" placeholder="Search for a movie" value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if movies %}
+        <h2>Search Results:</h2>
+        <ul>
+            {% for movie in movies %}
+                <li>
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
+                    <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}">Mark as watched</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
