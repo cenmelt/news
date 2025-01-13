@@ -24,6 +24,11 @@ class MovieController extends AbstractController
     #[Route('/search', name: 'movie_search')]
     public function search(Request $request): Response
     {
+        $user = $this->getUser();
+        if($user == null)
+        {
+            return $this->redirectToRoute('app_login');
+        }
         $query = $request->query->get('query', '');
         $movies = $query ? $this->tmdbService->searchMovies($query) : [];
 
@@ -36,6 +41,11 @@ class MovieController extends AbstractController
     #[Route('/watched/add/{id}', name: 'movie_watched_add')]
     public function addToWatchedList(int $id, Request $request): Response
     {
+        $user = $this->getUser();
+        if($user == null)
+        {
+            return $this->redirectToRoute('app_login');
+        }
         $title = $request->query->get('title');
         $posterPath = $request->query->get('poster_path');
     
@@ -57,6 +67,11 @@ class MovieController extends AbstractController
     #[Route('/watched', name: 'movie_watched_list')]
     public function watchedList(): Response
     {
+        $user = $this->getUser();
+        if($user == null)
+        {
+            return $this->redirectToRoute('app_login');
+        }
         $movies = $this->em->getRepository(MovieWatched::class)->findAll();
 
         return $this->render('movie/watched.html.twig', [

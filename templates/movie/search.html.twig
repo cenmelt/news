@@ -17,6 +17,7 @@
                     <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
                     <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
                     <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}">Mark as watched</a>
+                    {# <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}">Mark as watched</a> #}
                 </li>
             {% endfor %}
         </ul>
