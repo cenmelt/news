@@ -12,6 +12,27 @@
         {% endblock %}
     </head>
     <body>
+        {% if app.request.attributes.get('_route') not in ['app_login', 'app_mailPass'] %}
+            <header>
+                <nav>
+                    <div class="logo">
+                        <a href="{{ path('app_index') }}">WatchThis</a>
+                    </div>
+                    <ul class="menu">
+                        <li><a href="{{ path('app_index') }}">Accueil</a></li>
+                        <li><a href="{{ path('movie_watched_list') }}">Vos films vus</a></li>
+                        <li><a href="{{ path('movie_search') }}">Film Search</a></li>
+                    </ul>
+                    <div class="auth-buttons">
+                        {% if app.user %}
+                            <a href="{{ path('app_logout') }}" class="button">Sign out</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="button">Sign in</a>
+                        {% endif %}
+                    </div>
+                </nav>
+            </header>
+        {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>
