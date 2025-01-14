@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MovieWatchedRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: MovieWatchedRepository::class)]
 class MovieWatched
 {
@@ -22,13 +23,49 @@ class MovieWatched
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $posterPath = null;
 
-    // Getter for ID
+    #[ORM\Column(type: 'integer')]
+    private ?int $userId = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $watchedAt = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->watchedAt = new \DateTime();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getWatchedAt(): ?\DateTimeInterface
+    {
+        return $this->watchedAt;
+    }
+
+    public function setWatchedAt(\DateTimeInterface $watchedAt): self
+    {
+        $this->watchedAt = $watchedAt;
+        return $this;
+    }
+
+    // Getters and Setters
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    // Getter and Setter for movieId
     public function getMovieId(): ?int
     {
         return $this->movieId;
@@ -40,7 +77,6 @@ class MovieWatched
         return $this;
     }
 
-    // Getter and Setter for title
     public function getTitle(): ?string
     {
         return $this->title;
@@ -52,7 +88,6 @@ class MovieWatched
         return $this;
     }
 
-    // Getter and Setter for posterPath
     public function getPosterPath(): ?string
     {
         return $this->posterPath;
@@ -61,6 +96,17 @@ class MovieWatched
     public function setPosterPath(?string $posterPath): self
     {
         $this->posterPath = $posterPath;
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(int $userId): self
+    {
+        $this->userId = $userId;
         return $this;
     }
 }
