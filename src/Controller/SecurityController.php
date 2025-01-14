@@ -49,86 +49,77 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/passForget', name: 'app_mailPass')]
-public function mailForPass(EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer, Request $request): Response
-{
-    $form = $this->createForm(PassForMailFormType::class);
-    $form->handleRequest($request);
+    public function mailForPass(EntityManagerInterface $entityManager, UserRepository $userRepository, MailerInterface $mailer, Request $request): Response
+    {
+        $form = $this->createForm(PassForMailFormType::class);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $mail = $form->get('email')->getData();
-        $user = $userRepository->findOneBy(['email' => $mail]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mail = $form->get('email')->getData();
+            $user = $userRepository->findOneBy(['email' => $mail]);
 
-        if ($user !== null) {
-            // Générer un hash unique et l'enregistrer dans l'utilisateur
-            $resetToken = bin2hex(random_bytes(16)); // Génère un token de 32 caractères hexadécimaux
-            $user->setResetToken($resetToken); // Ajoutez un champ `resetToken` à votre entité User
+            if ($user !== null) {
+                $resetToken = bin2hex(random_bytes(16)); 
+                $user->setResetToken($resetToken); 
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $resetLink = $this->generateUrl('app_pass_reset', ['id' => $user->getId(), 'token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $email = (new Email())
+                    ->from('clement.collet123@orange.fr') // Adresse fixe
+                    ->to($user->getEmail())
+                    ->subject('Réinitialisation de votre mot de passe')
+                    ->html("
+                        <p>Bonjour,</p>
+                        <p>Vous avez demandé une réinitialisation de votre mot de passe. Cliquez sur le lien ci-dessous pour le réinitialiser :</p>
+                        <p><a href='{$resetLink}'>Réinitialiser le mot de passe</a></p>
+                        <p>Si vous n'avez pas fait cette demande, veuillez ignorer cet e-mail.</p>
+                    ");
+
+                $mailer->send($email);
+
+                $this->addFlash('success', "Un e-mail vous a été envoyé avec les instructions pour réinitialiser votre mot de passe.");
+                return $this->redirectToRoute('app_login');
+            } else {
+                $this->addFlash('error', "Aucun compte n'existe avec cette adresse e-mail.");
+            }
+        }
+
+        return $this->render('security/mailForPass.html.twig', [
+            'PassForMailForm' => $form,
+        ]);
+    }
+
+    #[Route(path: '/passForget/{id}/{token}', name: 'app_pass_reset')]
+    public function passForget(EntityManagerInterface $entityManager,UserRepository $userRepository,UserPasswordHasherInterface $passwordHasher,Request $request,int $id,string $token): Response {
+        $user = $userRepository->find($id);
+
+        if (!$user || $user->getResetToken() !== $token) {
+            $this->addFlash('error', 'Lien invalide ou expiré.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $form = $this->createForm(ResetPasswordFormType::class);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newPassword = $form->get('password')->getData();
+            $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+
+            $user->setPassword($hashedPassword);
+            $user->setResetToken(null); // Supprime le token après réinitialisation
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Construire l'e-mail
-            $resetLink = $this->generateUrl('app_pass_reset', ['id' => $user->getId(), 'token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
-
-            $email = (new Email())
-                ->from('clement.collet123@orange.fr') // Adresse fixe
-                ->to($user->getEmail())
-                ->subject('Réinitialisation de votre mot de passe')
-                ->html("
-                    <p>Bonjour,</p>
-                    <p>Vous avez demandé une réinitialisation de votre mot de passe. Cliquez sur le lien ci-dessous pour le réinitialiser :</p>
-                    <p><a href='{$resetLink}'>Réinitialiser le mot de passe</a></p>
-                    <p>Si vous n'avez pas fait cette demande, veuillez ignorer cet e-mail.</p>
-                ");
-
-            $mailer->send($email);
-
-            $this->addFlash('success', "Un e-mail vous a été envoyé avec les instructions pour réinitialiser votre mot de passe.");
+            $this->addFlash('success', 'Votre mot de passe a été réinitialisé avec succès.');
             return $this->redirectToRoute('app_login');
-        } else {
-            $this->addFlash('error', "Aucun compte n'existe avec cette adresse e-mail.");
         }
+
+        return $this->render('security/resetPassword.html.twig', [
+            'resetForm' => $form->createView(),
+        ]);
     }
-
-    return $this->render('security/mailForPass.html.twig', [
-        'PassForMailForm' => $form,
-    ]);
-}
-
-#[Route(path: '/passForget/{id}/{token}', name: 'app_pass_reset')]
-public function passForget(
-    EntityManagerInterface $entityManager,
-    UserRepository $userRepository,
-    UserPasswordHasherInterface $passwordHasher,
-    Request $request,
-    int $id,
-    string $token
-): Response {
-    $user = $userRepository->find($id);
-
-    if (!$user || $user->getResetToken() !== $token) {
-        $this->addFlash('error', 'Lien invalide ou expiré.');
-        return $this->redirectToRoute('app_login');
-    }
-
-    $form = $this->createForm(ResetPasswordFormType::class);
-
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $newPassword = $form->get('password')->getData();
-        $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
-
-        $user->setPassword($hashedPassword);
-        $user->setResetToken(null); // Supprime le token après réinitialisation
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Votre mot de passe a été réinitialisé avec succès.');
-        return $this->redirectToRoute('app_login');
-    }
-
-    return $this->render('security/resetPassword.html.twig', [
-        'resetForm' => $form->createView(),
-    ]);
-}
 }

@@ -16,6 +16,16 @@ class MovieWatchedRepository extends ServiceEntityRepository
         parent::__construct($registry, MovieWatched::class);
     }
 
+
+    public function findMovieIdsByUser($user): array
+    {
+        return $this->createQueryBuilder('mw')
+            ->select('mw.movieId')
+            ->where('mw.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
     //    /**
     //     * @return MovieWatched[] Returns an array of MovieWatched objects
     //     */
