@@ -25,16 +25,34 @@ class MovieController extends AbstractController
     public function search(Request $request): Response
     {
         $user = $this->getUser();
-        if($user == null)
-        {
+        if ($user === null) {
             return $this->redirectToRoute('app_login');
         }
-        $query = $request->query->get('query', '');
-        $movies = $query ? $this->tmdbService->searchMovies($query) : [];
+    
+        $query = $request->query->get('query');
+        $sortBy = $request->query->get('sort_by', 'popularity.desc'); 
+        $year = $request->query->get('year'); 
+        $year2 = $request->query->get('year2'); 
 
+        if(is_string($year))
+        {
+            $year = null;
+        }
+
+        if(is_string($year2))
+        {
+            $year2 = null;
+        }
+
+
+        $movies = $query ? $this->tmdbService->searchMovies($query, $sortBy, $year, $year2) : [];
+    
         return $this->render('movie/search.html.twig', [
-            'movies' => $movies['results'] ?? [],
+            'movies' => $movies ?? [],
             'query' => $query,
+            'sort_by' => $sortBy, 
+            'year' => $year,
+            'year2' => $year2,
         ]);
     }
 

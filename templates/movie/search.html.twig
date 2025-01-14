@@ -1,25 +1,54 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MovieController!{% endblock %}
+{% block title %}Movie Search{% endblock %}
 
 {% block body %}
-    <form method="get" action="{{ path('movie_search') }}">
-        <input type="text" name="query" placeholder="Search for a movie" value="{{ query }}">
-        <button type="submit">Search</button>
-    </form>
+    <div class="movie-search-container" style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif;">
+        <h1 style="text-align: center; color: #333;">Search for Movies</h1>
 
-    {% if movies %}
-        <h2>Search Results:</h2>
-        <ul>
-            {% for movie in movies %}
-                <li>
-                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <strong>{{ movie.title }}</strong> ({{ movie.release_date }})
-                    <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}">Mark as watched</a>
-                    {# <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}">Mark as watched</a> #}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <form method="get" action="{{ path('movie_search') }}" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+            <input type="text" name="query" placeholder="Search for a movie" value="{{ query }}" 
+                style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            
+            <select name="sort_by" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
+                <option value="popularity.desc" {% if sort_by == 'popularity.desc' %}selected{% endif %}>Most Popular</option>
+                <option value="popularity.asc" {% if sort_by == 'popularity.asc' %}selected{% endif %}>Least Popular</option>
+                <option value="release_date.desc" {% if sort_by == 'release_date.desc' %}selected{% endif %}>Newest First</option>
+                <option value="release_date.asc" {% if sort_by == 'release_date.asc' %}selected{% endif %}>Oldest First</option>
+            </select>
+            
+            <input type="number" name="year" min="1800" max="2100" placeholder="Enter start year" value="{{ year }}" 
+                    style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
+                
+            <input type="number" name="year2" min="1800" max="2100" placeholder="Enter end year" value="{{ year2 }}" 
+                    style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
+            
+            <button type="submit" 
+                style="padding: 10px 20px; border: none; background-color: #f90; color: white; border-radius: 5px; cursor: pointer;">
+                Search
+            </button>
+        </form>
+
+
+        {% if movies %}
+            <h2 style="color: #f90; text-align: center;">Search Results:</h2>
+            <ul style="list-style: none; padding: 0;">
+                {% for movie in movies %}
+                    <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #ccc;">
+                        <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}" 
+                            style="width: 100px; border-radius: 5px; margin-right: 20px;">
+                        <div>
+                            <strong style="font-size: 18px; color: #333;">{{ movie.title }}</strong> 
+                            <span style="font-size: 14px; color: #777;">({{ movie.release_date }})</span>
+                            <br>
+                            <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}" 
+                                style="color: #f90; text-decoration: none; font-size: 14px;">Mark as watched</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; color: #777;">No movies found. Try searching for something else.</p>
+        {% endif %}
+    </div>
 {% endblock %}
