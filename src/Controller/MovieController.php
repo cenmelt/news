@@ -34,9 +34,17 @@ class MovieController extends AbstractController
         $year = $request->query->get('year'); 
         $year2 = $request->query->get('year2'); 
 
+        $genre = $request->query->get('genre');
+
+        $genres = $this->tmdbService->getGenres();
+
         if(is_string($year))
         {
             $year = null;
+        }
+
+        if (is_string($genre)) {
+            $genre = intval($genre);
         }
 
         if(is_string($year2))
@@ -45,14 +53,16 @@ class MovieController extends AbstractController
         }
 
 
-        $movies = $query ? $this->tmdbService->searchMovies($query, $sortBy, $year, $year2) : [];
+        $movies = $query ? $this->tmdbService->searchMovies($query, $sortBy, $year, $year2, $genre) : [];
     
         return $this->render('movie/search.html.twig', [
             'movies' => $movies ?? [],
             'query' => $query,
-            'sort_by' => $sortBy, 
+            'sort_by' => $sortBy,
+            'genres' => $genres,
             'year' => $year,
             'year2' => $year2,
+            'selected_genre' => $genre
         ]);
     }
 

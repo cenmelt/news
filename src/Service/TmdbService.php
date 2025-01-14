@@ -15,7 +15,7 @@ class TmdbService
         $this->apiKey = $apiKey;
     }
 
-    public function searchMovies(string $query, string $sortBy= 'popularity.desc', ?int $year = null, ?int $year2 = null): array
+    public function searchMovies(string $query, string $sortBy= 'popularity.desc', ?int $year = null, ?int $year2 = null, ?int $genre = null): array
     {
         $response = $this->client->request(
             'GET',
@@ -35,6 +35,11 @@ class TmdbService
             $year = $year2;
         }
 
+        if($genre == 0)
+        {
+            $genre = null;
+        }
+
         if($year2 == 0)
         {
             $year2 = $year;
@@ -47,6 +52,12 @@ class TmdbService
             });
         }
 
+        if ($genre !== null) {
+            $movies = array_filter($movies, function ($movie) use ($genre) {
+                return in_array($genre, $movie['genre_ids']);
+            });
+        }
+        
         if ($sortBy === 'popularity.desc') {
             usort($movies, function ($a, $b) {
                 return $b['popularity'] <=> $a['popularity'];
@@ -66,5 +77,16 @@ class TmdbService
         }
 
         return $movies;
+    }
+
+    public function getGenres(): array
+    {
+        $url = "https://api.themoviedb.org/3/genre/movie/list?api_key=".$this->apiKey."";
+        
+        // Effectuer l'appel API
+        $response = file_get_contents($url);
+        $data = json_decode($response, true);
+        
+        return $data['genres'] ?? [];
     }
 }

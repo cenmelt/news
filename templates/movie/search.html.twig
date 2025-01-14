@@ -9,6 +9,13 @@
         <form method="get" action="{{ path('movie_search') }}" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
             <input type="text" name="query" placeholder="Search for a movie" value="{{ query }}" 
                 style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <select name="genre" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                <option value="null">None</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}" {% if genre.id == selected_genre %}selected{% endif %}>{{ genre.name }}</option>
+                {% endfor %}
+            </select>
             
             <select name="sort_by" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
                 <option value="popularity.desc" {% if sort_by == 'popularity.desc' %}selected{% endif %}>Most Popular</option>
