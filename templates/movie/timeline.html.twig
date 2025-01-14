@@ -7,9 +7,14 @@
 
 <h1>Movie Watched Timeline</h1>
 
+<form method="get" action="{{ path('movie_timeline') }}" id="search-form">
+    <input type="text" name="query" id="search-input" placeholder="Search for a movie..." autocomplete="off">
+    <button type="submit">Search</button>
+</form>
+
 <div class="timeline">
     {% for movie in movies %}
-        <div class="timeline-item {% if loop.index is odd %}left{% else %}right{% endif %}">
+        <div id="movie-{{ movie.id }}" class="timeline-item {% if loop.index is odd %}left{% else %}right{% endif %}">
             <div class="poster-wrapper">
                 <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="poster">
             </div>
@@ -20,6 +25,4 @@
         </div>
     {% endfor %}
 </div>
-
-
 {% endblock %}
