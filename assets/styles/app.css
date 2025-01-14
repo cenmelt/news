@@ -1,4 +1,5 @@
 /* CSS pour la page d'accueil des films */
+@import './styles/timeline.css';
 
 body {
     margin: 0;
@@ -12,10 +13,15 @@ header {
     background: #333;
     color: #fff;
     padding: 1rem 0;
+    width: 100vw;
+    top: 0;
+    position: fixed;
+    z-index: 999;
 }
 
 header nav {
     display: flex;
+   
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;

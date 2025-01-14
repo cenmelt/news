@@ -92,5 +92,24 @@ class MovieController extends AbstractController
         ]);
     }
 
-        
+    #[Route('/timeline', name: 'movie_timeline')]
+    public function timeline(): Response
+    {
+        $user = $this->getUser();
+
+        // Redirect to login if the user is not logged in
+        if ($user === null) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Fetch movies watched by the logged-in user, sorted by watched date
+        $movies = $this->em->getRepository(MovieWatched::class)->findBy(
+            ['user' => $user],
+            ['watchedAt' => 'ASC'] // Sort by watched date
+        );
+
+        return $this->render('movie/timeline.html.twig', [
+            'movies' => $movies,
+        ]);
+    }       
 }
