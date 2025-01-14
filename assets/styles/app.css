@@ -18,7 +18,14 @@ header {
     position: fixed;
     z-index: 999;
 }
-
+.menudiv {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    width: 100vw;
+    top: 0;
+    margin-bottom: 20px;
+}
 header nav {
     display: flex;
    
