@@ -24,16 +24,11 @@
                 <option value="release_date.asc" {% if sort_by == 'release_date.asc' %}selected{% endif %}>Oldest First</option>
             </select>
             <p style="margin: 0;">From</p>
-            <input type="number" name="year" min="1800" max="2100" placeholder="Enter start year" {% if year == 0 %}value=""{% else %}value="{{ year }}"{% endif %}
-                    style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
+            <input type="number" name="year" min="1800" max="2100" placeholder="Enter start year" {% if year == 0 %}value=""{% else %}value="{{ year }}"{% endif %}style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
             <p style="margin: 0;">to</p>
-            <input type="number" name="year2" min="1800" max="2100" placeholder="Enter end year" {% if year2 == 0 %}value=""{% else %}value="{{ year2 }}"{% endif %} 
-                    style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
+            <input type="number" name="year2" min="1800" max="2100" placeholder="Enter end year" {% if year2 == 0 %}value=""{% else %}value="{{ year2 }}"{% endif %} style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
             
-            <button type="submit" 
-                style="padding: 10px 20px; border: none; background-color: #f90; color: white; border-radius: 5px; cursor: pointer;">
-                Search
-            </button>
+            <button type="submit" style="padding: 10px 20px; border: none; background-color: #f90; color: white; border-radius: 5px; cursor: pointer;">Search</button>
         </form>
 
 
@@ -48,8 +43,14 @@
                             <strong style="font-size: 18px; color: #333;">{{ movie.title }}</strong> 
                             <span style="font-size: 14px; color: #777;">({{ movie.release_date }})</span>
                             <br>
-                            <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}" 
-                                style="color: #f90; text-decoration: none; font-size: 14px;">Mark as watched</a>
+                            {% if movie.alreadyWatched %}
+                                <span style="color: green; font-weight: bold;">Already Watched</span>
+                            {% else %}
+                                <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}"
+                                style="padding: 5px 10px; background-color: #f90; color: white; text-decoration: none; border-radius: 5px;">
+                                Mark as watched
+                                </a>
+                            {% endif %}                        
                         </div>
                     </li>
                 {% endfor %}

@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MovieWatched;
 use App\Service\TmdbService;
+use App\Repository\MovieWatchedRepository;
+
 
 class MovieController extends AbstractController
 {
@@ -22,7 +24,7 @@ class MovieController extends AbstractController
     }
 
     #[Route('/search', name: 'movie_search')]
-    public function search(Request $request): Response
+    public function search(Request $request, MovieWatchedRepository $movieWatchedRepository): Response
     {
         $user = $this->getUser();
         if ($user === null) {
@@ -54,6 +56,12 @@ class MovieController extends AbstractController
 
 
         $movies = $query ? $this->tmdbService->searchMovies($query, $sortBy, $year, $year2, $genre) : [];
+
+        $watchedMovieIds = $movieWatchedRepository->findMovieIdsByUser($user);
+
+        foreach ($movies as &$movie) {
+            $movie['alreadyWatched'] = in_array($movie['id'], $watchedMovieIds);
+        }
     
         return $this->render('movie/search.html.twig', [
             'movies' => $movies ?? [],

@@ -6,14 +6,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TmdbService
 {
-    private $client;
-    private $apiKey;
-
-    public function __construct(HttpClientInterface $client, string $apiKey)
-    {
-        $this->client = $client;
-        $this->apiKey = $apiKey;
-    }
+    public function __construct(private HttpClientInterface $client, private string $apiKey)
+    {}
 
     public function searchMovies(string $query, string $sortBy= 'popularity.desc', ?int $year = null, ?int $year2 = null, ?int $genre = null): array
     {
@@ -79,6 +73,21 @@ class TmdbService
         return $movies;
     }
 
+    public function trendingMovies(): array
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.themoviedb.org/3/trending/movie/day',
+            [
+                'query' => [
+                    'api_key' => $this->apiKey,
+                ],
+            ]
+        );
+
+        return $response->toArray();
+    }
+
     public function getGenres(): array
     {
         $url = "https://api.themoviedb.org/3/genre/movie/list?api_key=".$this->apiKey."";
@@ -89,4 +98,20 @@ class TmdbService
         
         return $data['genres'] ?? [];
     }
+
+    public function getMovieDetails(int $id): array
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.themoviedb.org/3/movie/'.$id,
+            [
+                'query' => [
+                    'api_key' => $this->apiKey,
+                ],
+            ]
+        );
+        
+        return $response->toArray();
+    }
+
 }

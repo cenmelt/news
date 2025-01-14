@@ -13,10 +13,11 @@
         <div class="movies-grid">
             {% for movie in mostViewedMovies %}
                 <div class="movie-card">
-                    <img src="{{ asset('uploads/movies/' ~ movie.image) }}" alt="{{ movie.title }}">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
                     <h3>{{ movie.title }}</h3>
-                    <p>{{ movie.description | slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('movie_details', { id: movie.id }) }}" class="details-button">Voir détails</a>
+                    <p> Release date : {{ movie.release_date }} </p>
+                    <p>{{ movie.overview | slice(0, 100) ~ '...' }}</p>
+                    <a href="{{ path('movie_details', { id: movie.id }) }}" style="padding: 10px 20px; background-color: #f90; color: white; text-decoration: none; border-radius: 5px;">Film details</a>                          
                 </div>
             {% else %}
                 <p>Aucun film disponible pour l'instant.</p>
