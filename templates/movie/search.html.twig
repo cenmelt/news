@@ -6,7 +6,7 @@
     <div class="movie-search-container" style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif;">
         <h1 style="text-align: center; color: #333;">Search for Movies</h1>
 
-        <form method="get" action="{{ path('movie_search') }}" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+        <form method="get" action="{{ path('movie_search') }}" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; align-items: center;">
             <input type="text" name="query" placeholder="Search for a movie" value="{{ query }}" 
                 style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
 
@@ -23,11 +23,11 @@
                 <option value="release_date.desc" {% if sort_by == 'release_date.desc' %}selected{% endif %}>Newest First</option>
                 <option value="release_date.asc" {% if sort_by == 'release_date.asc' %}selected{% endif %}>Oldest First</option>
             </select>
-            
-            <input type="number" name="year" min="1800" max="2100" placeholder="Enter start year" value="{{ year }}" 
+            <p style="margin: 0;">From</p>
+            <input type="number" name="year" min="1800" max="2100" placeholder="Enter start year" {% if year == 0 %}value=""{% else %}value="{{ year }}"{% endif %}
                     style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
-                
-            <input type="number" name="year2" min="1800" max="2100" placeholder="Enter end year" value="{{ year2 }}" 
+            <p style="margin: 0;">to</p>
+            <input type="number" name="year2" min="1800" max="2100" placeholder="Enter end year" {% if year2 == 0 %}value=""{% else %}value="{{ year2 }}"{% endif %} 
                     style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: #fff;">
             
             <button type="submit" 
