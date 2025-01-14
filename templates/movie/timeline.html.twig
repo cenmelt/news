@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movie Timeline{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('styles/styles/timeline.css') }}">
+
+<h1>Movie Watched Timeline</h1>
+
+<div class="timeline">
+    {% for movie in movies %}
+        <div class="timeline-item {% if loop.index is odd %}left{% else %}right{% endif %}">
+            <div class="poster-wrapper">
+                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="poster">
+            </div>
+            <div class="details">
+                <h3>{{ movie.title }}</h3>
+                <p class="timeline-date">{{ movie.watchedAt|date('Y-m-d') }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
