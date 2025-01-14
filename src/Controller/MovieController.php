@@ -59,8 +59,12 @@ class MovieController extends AbstractController
         $movie->setTitle($title);
         $movie->setPosterPath($posterPath);
 
-        // Set the current user's ID
-        $movie->setUserId($user->getId());
+        // Set the current date
+        $movie->setWatchedAt(new \DateTime());
+
+        // Set the current user's ID or object (if using relationships)
+        $movie->setUser($user);
+
 
         $this->em->persist($movie);
         $this->em->flush();
@@ -69,20 +73,24 @@ class MovieController extends AbstractController
     }
 
 
+
+
+
     #[Route('/watched', name: 'movie_watched_list')]
     public function watchedList(): Response
     {
         $user = $this->getUser();
-    
+
         if ($user === null) {
             return $this->redirectToRoute('app_login');
         }
-    
+
         $movies = $this->em->getRepository(MovieWatched::class)->findBy(['userId' => $user->getId()]);
-    
+
         return $this->render('movie/watched.html.twig', [
             'movies' => $movies,
         ]);
     }
+
         
 }

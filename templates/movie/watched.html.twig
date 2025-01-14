@@ -10,6 +10,7 @@
             <li>
                 <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}">
                 <strong>{{ movie.title }}</strong>
+                <p>Watched on: {{ movie.watchedAt|date('Y-m-d') }}</p>
             </li>
         {% endfor %}
     </ul>
