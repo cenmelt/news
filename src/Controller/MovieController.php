@@ -40,7 +40,7 @@ class MovieController extends AbstractController
 
         if(is_string($year))
         {
-            $year = null;
+            $year = intval($year);
         }
 
         if (is_string($genre)) {
@@ -49,7 +49,7 @@ class MovieController extends AbstractController
 
         if(is_string($year2))
         {
-            $year2 = null;
+            $year2 = intval($year2);
         }
 
 
