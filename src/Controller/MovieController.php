@@ -121,23 +121,53 @@ class MovieController extends AbstractController
     }
 
     #[Route('/timeline', name: 'movie_timeline')]
-    public function timeline(): Response
+    public function timeline(Request $request): Response
     {
         $user = $this->getUser();
-
-        // Redirect to login if the user is not logged in
+    
         if ($user === null) {
             return $this->redirectToRoute('app_login');
         }
-
-        // Fetch movies watched by the logged-in user, sorted by watched date
-        $movies = $this->em->getRepository(MovieWatched::class)->findBy(
-            ['user' => $user],
-            ['watchedAt' => 'ASC'] // Sort by watched date
-        );
-
+    
+        // Retrieve query and movieId from the request
+        $query = $request->query->get('query', '');
+        $movieId = $request->query->get('movieId', null);
+    
+        // If movieId is provided, redirect with a fragment
+        if ($movieId !== null) {
+            $movie = $this->em->getRepository(MovieWatched::class)->findOneBy([
+                'user' => $user,
+                'movieId' => (int)$movieId,
+            ]);
+    
+            if ($movie) {
+                // Redirect with an anchor to the movie
+                return $this->redirectToRoute('movie_timeline', [], 302, [
+                    'fragment' => 'movie-' . $movie->getMovieId(),
+                ]);
+            }
+    
+            $this->addFlash('error', 'No movie found with that ID.');
+        }
+    
+        $moviesQuery = $this->em->getRepository(MovieWatched::class)
+            ->createQueryBuilder('m')
+            ->where('m.user = :user')
+            ->setParameter('user', $user);
+    
+        if (!empty($query)) {
+            $moviesQuery->andWhere('m.title LIKE :query')
+                        ->setParameter('query', '%' . $query . '%');
+        }
+    
+        $movies = $moviesQuery->orderBy('m.watchedAt', 'ASC')->getQuery()->getResult();
+    
         return $this->render('movie/timeline.html.twig', [
             'movies' => $movies,
+            'query' => $query,
         ]);
-    }       
+    }
+
+
+    
 }
