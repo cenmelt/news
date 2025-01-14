@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\MovieWatchedRepository;
 use Doctrine\ORM\Mapping as ORM;
+
 
 #[ORM\Entity(repositoryClass: MovieWatchedRepository::class)]
 class MovieWatched
@@ -23,6 +25,40 @@ class MovieWatched
 
     #[ORM\Column(type: 'integer')]
     private ?int $userId = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $watchedAt = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->watchedAt = new \DateTime();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getWatchedAt(): ?\DateTimeInterface
+    {
+        return $this->watchedAt;
+    }
+
+    public function setWatchedAt(\DateTimeInterface $watchedAt): self
+    {
+        $this->watchedAt = $watchedAt;
+        return $this;
+    }
 
     // Getters and Setters
     public function getId(): ?int
