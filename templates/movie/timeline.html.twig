@@ -20,7 +20,7 @@
         {% for movie in movies %}
             <div id="movie-{{ movie.id }}" class="timeline-item {% if loop.index is odd %}timeline-left{% else %}timeline-right{% endif %}">
                 <div class="timeline-poster-wrapper">
-                    <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="timeline-poster">
+                    <img src="{{ tmdb_image_base }}{{ movie.posterPath }}" alt="{{ movie.title }}" class="timeline-poster">
                 </div>
                 <div class="timeline-details">
                     <h3 class="timeline-movie-title">{{ movie.title }}</h3>
