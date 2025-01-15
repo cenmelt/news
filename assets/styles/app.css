@@ -1,159 +1,115 @@
-/* CSS pour la page d'accueil des films */
-body {
+/* General Styles */
+.light-body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
     color: #333;
+    line-height: 1.6;
 }
 
-header {
-    background: #333;
-    color: #fff;
-    padding: 1rem 0;
-    width: 100vw;
+/* Header */
+.light-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
     top: 0;
-    position: fixed;
-    z-index: 999;
+    z-index: 1000;
 }
-.menudiv {
-    background: #333;
-    color: #fff;
-    padding: 1rem 0;
-    width: 100vw;
-    top: 0;
-    margin-bottom: 20px;
-}
-header nav {
+
+.light-container {
     display: flex;
-   
     justify-content: space-between;
     align-items: center;
+    padding: 0.5rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
 }
 
-header .logo a {
-    color: #fff;
-    text-decoration: none;
+/* Logo */
+.light-logo {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-header .menu {
+.light-logo-link {
+    text-decoration: none;
+    color: #ff6600; /* Bright orange accent for logo */
+    transition: color 0.3s ease;
+}
+
+.light-logo-link:hover {
+    color: #ff4500;
+}
+
+/* Navigation Menu */
+.light-nav {
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.light-menu {
     list-style: none;
     display: flex;
+    gap: 1.5rem;
     margin: 0;
     padding: 0;
 }
 
-header .menu li {
-    margin: 0 1rem;
-}
-
-header .menu a {
-    color: #fff;
+.light-menu-item {
     text-decoration: none;
-    font-size: 1rem;
-}
-
-header .auth-buttons .button {
-    background: #f90;
-    color: #fff;
+    color: #333;
+    font-weight: 500;
     padding: 0.5rem 1rem;
-    border: none;
-    text-decoration: none;
-    font-size: 1rem;
     border-radius: 5px;
-    transition: background 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-header .auth-buttons .button:hover {
-    background: #c60;
-}
-
-main .hero {
-    text-align: center;
-    padding: 2rem 1rem;
-    background: #444;
+.light-menu-item:hover {
+    background-color: #ff6600; /* Orange hover effect */
     color: #fff;
 }
 
-main .hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+/* Auth Buttons */
+.light-auth-buttons {
+    display: flex;
+    gap: 1rem;
 }
 
-main .hero p {
-    font-size: 1.2rem;
+.light-button {
+    text-decoration: none;
+    color: #fff;
+    background-color: #ff6600;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-main .most-viewed {
+.light-button:hover {
+    background-color: #ff4500;
+}
+
+/* Main Content */
+.light-main {
+    padding: 2rem;
     max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    margin: 0 auto;
 }
 
-main .most-viewed h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-}
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .light-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-main .movies-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-}
+    .light-menu {
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-.main .movies-grid .movie-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-align: center;
-    padding: 1rem;
-}
-
-.main .movies-grid .movie-card img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-}
-
-.main .movies-grid .movie-card h3 {
-    font-size: 1.2rem;
-    margin: 1rem 0;
-}
-
-.main .movies-grid .movie-card p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 1rem;
-}
-
-.main .movies-grid .movie-card .details-button {
-    background: #f90;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    text-decoration: none;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-.main .movies-grid .movie-card .details-button:hover {
-    background: #c60;
-}
-
-
-
-footer {
-    text-align: center;
-    background: #333;
-    color: #fff;
-    padding: 1rem 0;
-    margin-top: 2rem;
+    .light-auth-buttons {
+        margin-top: 1rem;
+    }
 }

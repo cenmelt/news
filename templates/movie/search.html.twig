@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="movie-search-container">
-    <h1 class="movie-search-title">{{ 'Search for Movies'|trans }}</h1>
+<div class="search-container">
+    <h1 class="search-title">{{ 'Search for Movies'|trans }}</h1>
 
-    <form method="get" action="{{ path('movie_search') }}" class="movie-search-form">
+    <form method="get" action="{{ path('movie_search') }}" class="search-form">
         <input type="text" name="query" placeholder="{{ 'Search for a movie'|trans }}" 
                value="{{ query }}" class="search-input">
 
-        <select name="genre" class="select-input">
+        <select name="genre" class="search-select">
             <option value="null">{{ 'None'|trans }}</option>
             {% for genre in genres %}
                 <option value="{{ genre.id }}" {% if genre.id == selected_genre %}selected{% endif %}>
@@ -24,7 +24,7 @@
             {% endfor %}
         </select>
 
-        <select name="sort_by" class="select-input">
+        <select name="sort_by" class="search-select">
             <option value="popularity.desc" {% if sort_by == 'popularity.desc' %}selected{% endif %}>
                 {{ 'Most Popular'|trans }}
             </option>
@@ -39,30 +39,30 @@
             </option>
         </select>
 
-        <span>{{ 'From'|trans }}</span>
+        <span class="search-year-label">{{ 'From'|trans }}</span>
         <input type="number" name="yearFrom" min="1800" max="2100" placeholder="{{ 'Enter start year'|trans }}" 
                value="{{ yearFrom == 0 ? '' : yearFrom }}" class="year-input">
 
-        <span>{{ 'to'|trans }}</span>
+        <span class="search-year-label">{{ 'to'|trans }}</span>
         <input type="number" name="yearTo" min="1800" max="2100" placeholder="{{ 'Enter end year'|trans }}" 
                value="{{ yearTo == 0 ? '' : yearTo }}" class="year-input">
 
-        <button type="submit" class="btn-primary">{{ 'Search'|trans }}</button>
+        <button type="submit" class="search-btn">{{ 'Search'|trans }}</button>
     </form>
 
     {% if movies %}
         <h2 class="search-results-title">{{ 'Search Results:'|trans }}</h2>
-        <ul class="movies-list">
+        <ul class="search-results-list">
             {% for movie in movies %}
-                <li class="movie-item">
+                <li class="search-result-item">
                     <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}" 
-                         class="movie-poster">
-                    <div class="movie-details">
-                        <strong class="movie-title">{{ movie.title }}</strong> 
-                        <span class="movie-release-date">({{ movie.release_date }})</span>
+                         class="search-result-poster">
+                    <div class="search-result-details">
+                        <strong class="search-result-title">{{ movie.title }}</strong> 
+                        <span class="search-result-release-date">({{ movie.release_date }})</span>
                         <br>
                         {% if movie.alreadyWatched %}
-                            <span class="movie-watched">{{ 'Already Watched'|trans }}</span>
+                            <span class="search-result-watched">{{ 'Already Watched'|trans }}</span>
                         {% else %}
                             <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path, query: query, yearFrom: yearFrom, yearTo:yearTo, sort_by:sort_by, page: currentPage, genre: selected_genre }) }}"
                                class="btn-watch">{{ 'Mark as watched'|trans }}</a>
@@ -72,7 +72,7 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p class="no-movies-message">{{ 'No movies found. Try searching for something else.'|trans }}</p>
+        <p class="no-results-message">{{ 'No movies found. Try searching for something else.'|trans }}</p>
     {% endif %}
     {% if movies %}
         <div class="pagination">

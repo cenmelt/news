@@ -7,14 +7,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="movies-container">
-    <h2 class="movies-title">{{ 'Your Watched Movies'|trans }}</h2>
-    <ul class="movies-list">
+<div class="watched-container">
+    <h2 class="watched-title">{{ 'Your Watched Movies'|trans }}</h2>
+    <ul class="watched-list">
         {% for movie in movies %}
-            <li class="movie-item">
-                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="movie-poster">
-                <div class="movie-details">
-                    <strong class="movie-title">{{ movie.title }}</strong>
+            <li class="watched-item">
+                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="watched-poster">
+                <div class="watched-details">
+                    <strong class="watched-movie-title">{{ movie.title }}</strong>
                 </div>
             </li>
         {% endfor %}

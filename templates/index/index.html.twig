@@ -7,24 +7,24 @@
 {% endblock %}
 
 {% block body %}
-<main>
-    <section class="hero">
-        <h1 class="hero-title">{{ 'Bienvenue sur WatchThis'|trans }}</h1>
-        <p class="hero-subtitle">{{ 'Découvrez tous les films, les plus récents et les plus populaires.'|trans }}</p>
+<main class="index-main">
+    <section class="index-hero">
+        <h1 class="index-hero-title">{{ 'Bienvenue sur WatchThis'|trans }}</h1>
+        <p class="index-hero-subtitle">{{ 'Découvrez tous les films, les plus récents et les plus populaires.'|trans }}</p>
     </section>
-    <section class="most-viewed">
-        <h2 class="section-title">{{ 'Les films les plus vus du moment'|trans }}</h2>
-        <div class="movies-grid">
+    <section class="index-most-viewed">
+        <h2 class="index-section-title">{{ 'Les films les plus vus du moment'|trans }}</h2>
+        <div class="index-movies-grid">
             {% for movie in mostViewedMovies %}
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster">
-                    <h3 class="movie-title">{{ movie.title }}</h3>
-                    <p class="movie-release-date">{{ 'Release date:'|trans }} {{ movie.release_date }}</p>
-                    <p class="movie-overview">{{ movie.overview | slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('movie_details', { id: movie.id }) }}" class="btn-primary">{{ 'Film details'|trans }}</a>                          
+                <div class="index-movie-card">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}" class="index-movie-poster">
+                    <h3 class="index-movie-title">{{ movie.title }}</h3>
+                    <p class="index-movie-release-date">{{ 'Release date:'|trans }} {{ movie.release_date }}</p>
+                    <p class="index-movie-overview">{{ movie.overview | slice(0, 100) ~ '...' }}</p>
+                    <a href="{{ path('movie_details', { id: movie.id }) }}" class="index-btn-primary">{{ 'Film details'|trans }}</a>                          
                 </div>
             {% else %}
-                <p class="no-movies-message">{{ "Aucun film disponible pour l'instant."|trans }}</p>
+                <p class="index-no-movies-message">{{ "Aucun film disponible pour l'instant."|trans }}</p>
             {% endfor %}
         </div>
     </section>

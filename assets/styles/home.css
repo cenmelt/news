@@ -1,0 +1,119 @@
+/* Main Styles for the Index Page */
+.index-main {
+    padding: 2rem;
+    background-color: #f9f9f9; /* Light background */
+    color: #333; /* Dark text */
+}
+
+/* Hero Section */
+.index-hero {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #ffffff, #c4c4c4); /* Light gradient */
+    color: #fff;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.index-hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.index-hero-subtitle {
+    font-size: 1.2rem;
+}
+
+/* Most Viewed Section */
+.index-most-viewed {
+    padding: 2rem 0;
+}
+
+.index-section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #ff6600;
+}
+
+/* Movie Grid */
+.index-movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.index-movie-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.index-movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.index-movie-poster {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.index-movie-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.index-movie-release-date,
+.index-movie-overview {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.index-btn-primary {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #ff6600;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.index-btn-primary:hover {
+    background-color: #ff4500;
+}
+
+/* No Movies Message */
+.index-no-movies-message {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .index-hero-title {
+        font-size: 2rem;
+    }
+
+    .index-section-title {
+        font-size: 1.8rem;
+    }
+
+    .index-movie-card {
+        padding: 0.5rem;
+    }
+
+    .index-movie-title {
+        font-size: 1rem;
+    }
+}
