@@ -19,10 +19,16 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            
+
     App\Service\TmdbService:
         arguments:
+            $client: '@http_client'
             $apiKey: '%env(TMDB_API_KEY)%'
+            $apiBase: '%env(TMDB_API_BASE)%'
+
+    App\Service\MovieProcessorService: ~
+
+    App\Service\MovieFilterService: ~
 
 
     # add more service definitions when explicit configuration is needed
