@@ -16,6 +16,6 @@ Adrien Kaluzny :
 ✅ Connexion à une API de film ( composant HTTP client )
 ✅ View watched movies
 ✅ Ajouter des films en film vus
-✅ Gestion des films vues → Timeline ?
-✅ Link in .env
+✅ Gestion des films vue ne timeline
+✅ Liens dans le .env
 ✅ Barre de recherche par nom

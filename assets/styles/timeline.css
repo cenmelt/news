@@ -1,15 +1,33 @@
-/* Container for the timeline page */
-.timeline-container {
-  padding: 2rem;
-  background-color: #f9f9f9;
-  min-height: 100vh;
+/* General Styles */
+body {
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif; /* Funky font */
+  margin: 0;
+  background: linear-gradient(135deg, #fcbf49, #ff6f61);
+  color: #333;
 }
 
+/* Timeline Container */
+.timeline-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 5px dashed #ff6f61; /* Funky border */
+}
+
+/* Title */
 .timeline-title {
-  text-align: center;
   font-size: 2.5rem;
-  color: #333;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #6a0572;
+  text-align: center;
+  letter-spacing: 3px;
   margin-bottom: 2rem;
+  text-shadow: 2px 2px #fcbf49;
+  animation: bounce 2s infinite;
 }
 
 /* Search Form */
@@ -21,185 +39,178 @@
 }
 
 .timeline-search-input {
-  padding: 0.75rem;
+  padding: 0.8rem;
+  border: 2px solid #6a0572;
+  border-radius: 8px;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  flex: 1;
-  max-width: 300px;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.timeline-search-input:focus {
+  border-color: #ff6f61;
+  box-shadow: 0 0 5px #ff6f61;
 }
 
 .timeline-search-btn {
-  padding: 0.75rem 1.5rem;
+  background-color: #ff6f61;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
   font-size: 1rem;
   font-weight: bold;
-  color: #fff;
-  background-color: #ffa500;
-  border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
 }
 
 .timeline-search-btn:hover {
-  background-color: #ff8000;
+  background-color: #d72638;
+  transform: scale(1.1);
 }
 
 /* Timeline */
 .timeline {
   position: relative;
-  width: 80%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 0;
-  background: #fff8ef;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin: 2rem 0;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-left: 3px solid #ff6f61; /* Vertical timeline line */
 }
 
 .timeline::before {
-  content: "";
+  content: '';
   position: absolute;
+  left: 50%;
   top: 0;
   bottom: 0;
-  left: 50%;
-  width: 2px;
-  background: #ffa500;
-  transform: translateX(-50%);
+  width: 3px;
+  background-color: #ff6f61; /* Central timeline line */
+  z-index: 1;
 }
 
+/* Timeline Item */
 .timeline-item {
   position: relative;
-  width: 50%;
-  padding: 20px;
-  margin-bottom: 40px;
   display: flex;
   align-items: center;
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.timeline-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Left/Right Styling */
 .timeline-left {
-  left: 0;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  left: calc(-50% - 15px);
+  margin-right: auto;
+  justify-content: flex-start;
   text-align: right;
 }
 
 .timeline-right {
-  left: 50%;
+  left: calc(50% + 15px);
+  margin-left: auto;
   justify-content: flex-start;
   text-align: left;
 }
 
-.timeline-item::before {
-  content: "";
+.timeline-left::before,
+.timeline-right::before {
+  content: '';
   position: absolute;
-  top: 20px;
+  top: 50%;
   width: 15px;
   height: 15px;
-  background: #fff;
-  border: 3px solid #ffa500;
+  background-color: #ff6f61;
+  border: 3px solid #ffffff;
   border-radius: 50%;
-  z-index: 1;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transform: translateY(-50%);
+  z-index: 3;
 }
 
 .timeline-left::before {
-  right: -10px;
+  right: -25px;
 }
 
 .timeline-right::before {
-  left: -10px;
-}
-
-.timeline-item:hover::before {
-  background: #ffa500;
-  transform: scale(1.2);
+  left: -25px;
 }
 
 /* Poster */
 .timeline-poster-wrapper {
-  display: flex;
-  align-items: center;
+  flex-shrink: 0;
+  width: 120px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-poster {
-  max-width: 100px;
-  border-radius: 5px;
-  border: 2px solid #ffa500;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.timeline-poster:hover {
-  transform: rotate(-3deg) scale(1.08);
-}
-
-.timeline-left .timeline-poster-wrapper {
-  order: 2;
-  margin-left: 20px;
-}
-
-.timeline-left .timeline-details {
-  order: 1;
-}
-
-.timeline-right .timeline-poster-wrapper {
-  order: 1;
-  margin-right: 20px;
-}
-
-.timeline-right .timeline-details {
-  order: 2;
+.timeline-poster-wrapper:hover .timeline-poster {
+  transform: scale(1.1);
 }
 
 /* Details */
 .timeline-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex: 1;
+  margin: 0 1rem;
+  padding: 0.5rem;
+  font-size: 0.9rem; /* Smaller text */
 }
 
 .timeline-movie-title {
-  font-size: 1.2rem;
-  color: #444;
-  margin-bottom: 8px;
+  font-size: 1.2rem; /* Smaller title */
+  font-weight: bold;
+  color: #6a0572;
+  text-shadow: 1px 1px #fcbf49;
+  margin: 0;
 }
 
 .timeline-date {
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Smaller date */
   color: #999;
+  margin-top: 0.5rem;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-  .timeline {
-      padding: 20px 0;
-  }
-
   .timeline::before {
-      left: 20px;
+      left: 10px;
   }
 
-  .timeline-item {
-      width: 100%;
-      margin-bottom: 60px;
-      padding-left: 60px;
+  .timeline-left,
+  .timeline-right {
       flex-direction: row;
+      left: 0;
       text-align: left;
   }
 
-  .timeline-item::before {
-      left: 0;
+  .timeline-left::before,
+  .timeline-right::before {
+      left: -10px;
       right: auto;
   }
 
-  .timeline-left .timeline-poster-wrapper,
-  .timeline-right .timeline-poster-wrapper {
-      order: 1;
-      margin: 0 10px 10px 0;
-  }
-
-  .timeline-left .timeline-details,
-  .timeline-right .timeline-details {
-      order: 2;
-      margin: 0;
+  .timeline-poster-wrapper {
+      width: 100px;
+      height: 150px;
   }
 }
