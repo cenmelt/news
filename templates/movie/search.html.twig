@@ -39,12 +39,12 @@
         </select>
 
         <span>{{ 'From'|trans }}</span>
-        <input type="number" name="year" min="1800" max="2100" placeholder="{{ 'Enter start year'|trans }}" 
-               value="{{ yearFrom == 0 ? '' : year }}" class="year-input">
+        <input type="number" name="yearFrom" min="1800" max="2100" placeholder="{{ 'Enter start year'|trans }}" 
+               value="{{ yearFrom == 0 ? '' : yearFrom }}" class="year-input">
 
         <span>{{ 'to'|trans }}</span>
-        <input type="number" name="year2" min="1800" max="2100" placeholder="{{ 'Enter end year'|trans }}" 
-               value="{{ yearTo == 0 ? '' : year2 }}" class="year-input">
+        <input type="number" name="yearTo" min="1800" max="2100" placeholder="{{ 'Enter end year'|trans }}" 
+               value="{{ yearTo == 0 ? '' : yearTo }}" class="year-input">
 
         <button type="submit" class="btn-primary">{{ 'Search'|trans }}</button>
     </form>
