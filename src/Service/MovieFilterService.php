@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-
 class MovieFilterService
 {
     private ?int $yearFrom;
@@ -11,12 +9,17 @@ class MovieFilterService
     private ?int $genre;
     private string $sortBy;
 
-    public function __construct( int $yearFrom = null, ?int $yearTo = null, ?int $genre = null, string $sortBy = 'popularity.desc')
-    {
+    public function __construct(
+        ?int $yearFrom = null,
+        ?int $yearTo = null,
+        ?int $genre = null,
+        string $sortBy = 'popularity.desc'
+    ) {
         $this->yearFrom = $yearFrom;
         $this->yearTo = $yearTo;
         $this->genre = $genre;
         $this->sortBy = $sortBy;
+        $this->syncYears();
     }
 
     public function getYearFrom(): ?int
@@ -56,11 +59,14 @@ class MovieFilterService
         $this->genre = $genre === 0 ? null : $genre;
     }
 
-    public function SetSortBy(string $sortBy): void 
+    public function setSortBy(string $sortBy): void
     {
         $this->sortBy = $sortBy;
     }
 
+    /**
+     * Synchronize yearFrom and yearTo values to ensure consistency.
+     */
     private function syncYears(): void
     {
         if ($this->yearFrom !== null && $this->yearTo === null) {
