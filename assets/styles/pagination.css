@@ -2,43 +2,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    font-family: Arial, sans-serif;
+    margin: 2rem 0;
+    gap: 1rem;
 }
 
-.pagination__link,
 .pagination__prev,
-.pagination__next {
+.pagination__next,
+.pagination__link {
     padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color: white;
+    color: #2c3e50;
+    border: 1px solid #ececec;
+    border-radius: 4px;
     text-decoration: none;
-    color: #333;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination__prev:hover,
+.pagination__next:hover,
+.pagination__link:hover {
+    background-color: #1abc9c;
+    color: white;
 }
 
 .pagination__current {
     padding: 0.5rem 1rem;
-    border: 1px solid #007BFF;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #007BFF;
-}
-
-.pagination__link:hover,
-.pagination__prev:hover,
-.pagination__next:hover {
-    background-color: #007BFF;
-    color: #fff;
+    background-color: #2c3e50;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
 }
 
 .pagination__disabled {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: #999;
-    background-color: #f1f1f1;
+    color: #ccc;
+    background-color: #f0f0f0;
     cursor: not-allowed;
 }
