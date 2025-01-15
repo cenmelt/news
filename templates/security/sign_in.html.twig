@@ -7,53 +7,49 @@
 {% endblock %}
 
 {% block body %}
-<div class="sign-in-container">
-    <div class="sign-in-card">
-        <h1 class="sign-in-title">{{ 'Sign In'|trans }}</h1>
+<div class="signin-container">
+    <div class="signin-card">
+        <h1 class="signin-title">{{ 'Sign In'|trans }}</h1>
 
-        <form method="post" class="sign-in-form">
+        <form method="post" class="signin-form">
             {% if error %}
-                <div class="alert alert-error" role="alert" aria-live="polite">
+                <div class="signin-alert signin-alert-error" role="alert" aria-live="polite">
                     {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
             {% endif %}
 
             <!-- Email Field -->
-            <div class="form-group">
-                <label for="username" class="form-label" aria-label="Email">{{ 'Email'|trans }}</label>
+            <div class="signin-form-group">
+                <label for="username" class="signin-form-label">{{ 'Email'|trans }}</label>
                 <input type="email" value="{{ last_username }}" name="_username" id="username" 
-                       class="form-input" placeholder="{{ 'Enter your email'|trans }}" 
-                       autocomplete="email" required autofocus aria-required="true">
+                       class="signin-form-input" placeholder="{{ 'Enter your email'|trans }}" 
+                       autocomplete="email" required autofocus>
             </div>
 
             <!-- Password Field -->
-            <div class="form-group">
-                <label for="password" class="form-label" aria-label="Password">{{ 'Password'|trans }}</label>
+            <div class="signin-form-group">
+                <label for="password" class="signin-form-label">{{ 'Password'|trans }}</label>
                 <input type="password" name="_password" id="password" 
-                       class="form-input" placeholder="{{ 'Enter your password'|trans }}" 
-                       autocomplete="current-password" required aria-required="true">
+                       class="signin-form-input" placeholder="{{ 'Enter your password'|trans }}" 
+                       autocomplete="current-password" required>
             </div>
 
-            <!-- Forgot Password Link -->
-            <div class="form-helper">
-                <a href="{{ path('app_mailPass') }}" class="form-link">{{ 'Forgot your password?'|trans }}</a>
-            </div>
-
-            <!-- Sign-Up Link -->
-            <div class="form-helper">
-                <a href="{{ path('app_register') }}" class="form-link">{{ 'Sign up'|trans }}</a>
+            <!-- Forgot Password and Sign-Up Links -->
+            <div class="signin-form-helper">
+                <a href="{{ path('app_mailPass') }}" class="signin-form-link">{{ 'Forgot your password?'|trans }}</a>
+                <a href="{{ path('app_register') }}" class="signin-form-link">{{ 'Sign up'|trans }}</a>
             </div>
 
             <!-- CSRF Token -->
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <!-- Submit Button -->
-            <button type="submit" class="btn-primary">{{ 'Sign In'|trans }}</button>
+            <button type="submit" class="signin-btn-primary">{{ 'Sign In'|trans }}</button>
         </form>
 
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ label }}" role="alert" aria-live="polite">
+                <div class="signin-alert signin-alert-{{ label }}" role="alert" aria-live="polite">
                     {{ message }}
                 </div>
             {% endfor %}

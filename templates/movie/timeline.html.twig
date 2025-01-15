@@ -1,28 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Movie Timeline{% endblock %}
+{% block title %}{{ 'Movie Timeline'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/timeline.css') }}">
+{% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{{ asset('styles/styles/timeline.css') }}">
+<div class="timeline-container">
+    <h1 class="timeline-title">{{ 'Movie Watched Timeline'|trans }}</h1>
 
-<h1>Movie Watched Timeline</h1>
+    <form method="get" action="{{ path('movie_timeline') }}" class="timeline-search-form">
+        <input type="text" name="query" placeholder="{{ 'Search for a movie...'|trans }}" autocomplete="off" 
+               class="timeline-search-input">
+        <button type="submit" class="timeline-search-btn">{{ 'Search'|trans }}</button>
+    </form>
 
-<form method="get" action="{{ path('movie_timeline') }}" id="search-form">
-    <input type="text" name="query" id="search-input" placeholder="Search for a movie..." autocomplete="off">
-    <button type="submit">Search</button>
-</form>
-
-<div class="timeline">
-    {% for movie in movies %}
-        <div id="movie-{{ movie.id }}" class="timeline-item {% if loop.index is odd %}left{% else %}right{% endif %}">
-            <div class="poster-wrapper">
-                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="poster">
+    <div class="timeline">
+        {% for movie in movies %}
+            <div id="movie-{{ movie.id }}" class="timeline-item {% if loop.index is odd %}timeline-left{% else %}timeline-right{% endif %}">
+                <div class="timeline-poster-wrapper">
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="timeline-poster">
+                </div>
+                <div class="timeline-details">
+                    <h3 class="timeline-movie-title">{{ movie.title }}</h3>
+                    <p class="timeline-date">{{ movie.watchedAt|date('Y-m-d') }}</p>
+                </div>
             </div>
-            <div class="details">
-                <h3>{{ movie.title }}</h3>
-                <p class="timeline-date">{{ movie.watchedAt|date('Y-m-d') }}</p>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
