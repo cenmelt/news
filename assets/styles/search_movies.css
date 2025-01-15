@@ -1,0 +1,120 @@
+/* General Layout */
+.movie-search-container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.movie-search-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Search Form */
+.movie-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-input,
+.select-input,
+.year-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.year-input {
+    width: 80px;
+    text-align: center;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f90;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #e08000;
+}
+
+/* Results Section */
+.search-results-title {
+    color: #f90;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.movies-list {
+    list-style: none;
+    padding: 0;
+}
+
+.movie-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.movie-poster {
+    width: 100px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.movie-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-title {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+.movie-release-date {
+    font-size: 14px;
+    color: #777;
+}
+
+.movie-watched {
+    color: green;
+    font-weight: bold;
+}
+
+.btn-watch {
+    padding: 5px 10px;
+    background-color: #f90;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-watch:hover {
+    background-color: #e08000;
+}
+
+.no-movies-message {
+    text-align: center;
+    color: #777;
+    margin-top: 20px;
+    font-size: 14px;
+}

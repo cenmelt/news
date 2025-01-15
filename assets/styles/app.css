@@ -1,6 +1,4 @@
 /* CSS pour la page d'accueil des films */
-@import './styles/timeline.css';
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;

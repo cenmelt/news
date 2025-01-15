@@ -1,0 +1,62 @@
+/* Container Styles */
+.movies-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title Styles */
+.movies-title {
+    font-size: 2rem;
+    color: #444;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Movies List */
+.movies-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Movie Item */
+.movie-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Movie Poster */
+.movie-poster {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Movie Details */
+.movie-details {
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.movie-title {
+    font-size: 1.1rem;
+    color: #444;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Hover Effects */
+.movie-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}

@@ -1,43 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'Register'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/register.css') }}">
+{% endblock %}
 
 {% block body %}
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)); font-family: 'Arial', sans-serif;">
-        <div style="background-color: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px;">
-            <h1 style="text-align: center; font-size: 28px; font-weight: bold; color: #333; margin-bottom: 20px;">Register</h1>
+<div class="register-container">
+    <div class="register-card">
+        <h1 class="register-title">{{ 'Register'|trans }}</h1>
 
-            {% for flash_error in app.flashes('verify_email_error') %}
-                <div class="alert alert-danger" role="alert" style="font-size: 14px; padding: 15px; margin-bottom: 15px; border-radius: 8px; background-color: #f8d7da; color: #721c24; text-align: center;">
-                    {{ flash_error }}
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert" aria-live="polite">
+                {{ flash_error }}
+            </div>
+        {% endfor %}
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm, { 'attr': { 'class': 'register-form' } }) }}
+            <div class="form-group">
+                {{ form_row(registrationForm.email, { 
+                    'label_attr': { 'class': 'form-label', 'aria-label': 'Email Address' },
+                    'attr': { 'class': 'form-input', 'placeholder': 'Enter your email', 'aria-required': 'true' }
+                }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(registrationForm.plainPassword, { 
+                    'label_attr': { 'class': 'form-label', 'aria-label': 'Password' },
+                    'attr': { 'class': 'form-input', 'placeholder': 'Enter your password', 'aria-required': 'true' }
+                }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(registrationForm.agreeTerms, { 
+                    'label_attr': { 'class': 'form-label', 'aria-label': 'Agree to terms' }
+                }) }}
+            </div>
+
+            <button type="submit" class="btn-primary" aria-label="Submit registration form">
+                {{ 'Register'|trans }}
+            </button>
+        {{ form_end(registrationForm) }}
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}" role="alert" aria-live="polite">
+                    {{ message }}
                 </div>
             {% endfor %}
-
-            {{ form_errors(registrationForm) }}
-
-            {{ form_start(registrationForm) }}
-                <div style="margin-bottom: 20px;">
-                    {{ form_row(registrationForm.email) }}
-                </div>
-                <div style="margin-bottom: 20px;">
-                    {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
-                </div>
-                <div style="margin-bottom: 20px;">
-                    {{ form_row(registrationForm.agreeTerms) }}
-                </div>
-
-                <button type="submit" style="width: 100%; padding: 12px; font-size: 16px; background-color: #f90; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s;">
-                    Register
-                </button>
-            {{ form_end(registrationForm) }}
-
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }}" style="font-size: 14px; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: center; background-color: {% if label == 'error' %}#f8d7da{% else %}#d4edda{% endif %}; color: {% if label == 'error' %}#721c24{% else %}#155724{% endif %};">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock %}

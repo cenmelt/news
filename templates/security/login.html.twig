@@ -1,64 +1,63 @@
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
-
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ 'Sign In'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/sign_in.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)); font-family: 'Arial', sans-serif;">
-        <div style="background-color: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; border: none;">
-            <h1 style="text-align: center; font-size: 28px; font-weight: bold; color: #333; margin-bottom: 20px;">Sign In</h1>
+<div class="sign-in-container">
+    <div class="sign-in-card">
+        <h1 class="sign-in-title">{{ 'Sign In'|trans }}</h1>
 
-            <form method="post">
-                {% if error %}
-                    <div style="font-size: 14px; border-radius: 8px; padding: 15px; background-color: #f8d7da; color: #721c24; text-align: center;">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
-                    </div>
-                {% endif %}
+        <form method="post" class="sign-in-form">
+            {% if error %}
+                <div class="alert alert-error" role="alert" aria-live="polite">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
 
-                <!-- Champ Email -->
-                <div style="margin-bottom: 20px;">
-                    <label for="username" style="font-size: 14px; font-weight: 600; color: #555;">Email</label>
-                    <input type="email" value="{{ last_username }}" name="_username" id="username" style="width: 100%; padding: 12px; font-size: 16px; color: #333; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; transition: all 0.3s ease;" placeholder="Enter your email" autocomplete="email" required autofocus>
-                </div>
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="username" class="form-label" aria-label="Email">{{ 'Email'|trans }}</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" 
+                       class="form-input" placeholder="{{ 'Enter your email'|trans }}" 
+                       autocomplete="email" required autofocus aria-required="true">
+            </div>
 
-                <!-- Champ Mot de Passe -->
-                <div style="margin-bottom: 20px;">
-                    <label for="password" style="font-size: 14px; font-weight: 600; color: #555;">Password</label>
-                    <input type="password" name="_password" id="password" style="width: 100%; padding: 12px; font-size: 16px; color: #333; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; transition: all 0.3s ease;" placeholder="Enter your password" autocomplete="current-password" required>
-                </div>
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password" class="form-label" aria-label="Password">{{ 'Password'|trans }}</label>
+                <input type="password" name="_password" id="password" 
+                       class="form-input" placeholder="{{ 'Enter your password'|trans }}" 
+                       autocomplete="current-password" required aria-required="true">
+            </div>
 
-                <!-- Lien Mot de Passe Oublié -->
-                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-                    <a href="{{ path('app_mailPass') }}" style="font-size: 12px; color: #4facfe; text-decoration: none; transition: color 0.3s;">Forgot your password ?</a>
-                </div>
+            <!-- Forgot Password Link -->
+            <div class="form-helper">
+                <a href="{{ path('app_mailPass') }}" class="form-link">{{ 'Forgot your password?'|trans }}</a>
+            </div>
 
-                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <a href="{{ path('app_register') }}" style="font-size: 12px; color: #4facfe; text-decoration: none; transition: color 0.3s;" >Sign up</a>
-                </div>
-                <!-- Token CSRF -->
-                <div style="margin-bottom: 20px;">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                </div>
+            <!-- Sign-Up Link -->
+            <div class="form-helper">
+                <a href="{{ path('app_register') }}" class="form-link">{{ 'Sign up'|trans }}</a>
+            </div>
 
-                <!-- Bouton de Soumission -->
-                <div style="margin-bottom: 20px;">
-                    <button type="submit" style="width: 100%; padding: 12px; font-size: 16px; background-color: #f90; color: white; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s;">Sign in</button>
+            <!-- CSRF Token -->
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary">{{ 'Sign In'|trans }}</button>
+        </form>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}" role="alert" aria-live="polite">
+                    {{ message }}
                 </div>
-            </form>
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }}" style="font-size: 14px; padding: 15px; margin-top: 15px; border-radius: 8px; text-align: center; background-color: {% if label == 'error' %}#f8d7da{% else %}#d4edda{% endif %}; color: {% if label == 'error' %}#721c24{% else %}#155724{% endif %};">
-                        {{ message }}
-                    </div>
-                {% endfor %}
             {% endfor %}
-        </div>
+        {% endfor %}
     </div>
+</div>
 {% endblock %}
