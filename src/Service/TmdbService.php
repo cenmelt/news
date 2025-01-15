@@ -9,7 +9,7 @@ class TmdbService
     public function __construct(private HttpClientInterface $client, private string $apiKey)
     {}
 
-    public function searchMovies(string $query, string $sortBy= 'popularity.desc', ?int $year = null, ?int $year2 = null, ?int $genre = null): array
+    public function searchMovies(string $query, MovieFilter $filter): array
     {
         $response = $this->client->request(
             'GET',
@@ -24,25 +24,27 @@ class TmdbService
 
         $movies = $response->toArray()['results'] ?? [];
 
-        if($year == 0)
-        {
-            $year = $year2;
+        $yearFrom = $filter->getYearFrom();
+        $yearTo = $filter->getYearTo();
+        $genre = $filter->getGenre();
+        $sortBy = $filter->getSortBy();
+
+        if ($yearFrom === 0) {
+            $yearFrom = $yearTo;
         }
 
-        if($genre == 0)
-        {
+        if ($genre === 0) {
             $genre = null;
         }
 
-        if($year2 == 0)
-        {
-            $year2 = $year;
+        if ($yearTo === 0) {
+            $yearTo = $yearFrom;
         }
 
-        if ($year != 0 && $year2 != 0) {
-            $movies = array_filter($movies, function ($movie) use ($year, $year2) {
-                $movieYear = substr($movie['release_date'], 0, 4); 
-                return $movieYear >= $year && $movieYear <= $year2;
+        if ($yearFrom && $yearTo) {
+            $movies = array_filter($movies, function ($movie) use ($yearFrom, $yearTo) {
+                $movieYear = substr($movie['release_date'], 0, 4);
+                return $movieYear >= $yearFrom && $movieYear <= $yearTo;
             });
         }
 
@@ -51,25 +53,16 @@ class TmdbService
                 return in_array($genre, $movie['genre_ids']);
             });
         }
-        
-        if ($sortBy === 'popularity.desc') {
-            usort($movies, function ($a, $b) {
-                return $b['popularity'] <=> $a['popularity'];
-            });
-        } elseif ($sortBy === 'popularity.asc') {
-            usort($movies, function ($a, $b) {
-                return $a['popularity'] <=> $b['popularity'];
-            });
-        } elseif ($sortBy === 'release_date.desc') {
-            usort($movies, function ($a, $b) {
-                return strtotime($b['release_date']) <=> strtotime($a['release_date']);
-            });
-        } elseif ($sortBy === 'release_date.asc') {
-            usort($movies, function ($a, $b) {
-                return strtotime($a['release_date']) <=> strtotime($b['release_date']);
-            });
-        }
 
+        if ($sortBy === 'popularity.desc') {
+            usort($movies, fn($a, $b) => $b['popularity'] <=> $a['popularity']);
+        } elseif ($sortBy === 'popularity.asc') {
+            usort($movies, fn($a, $b) => $a['popularity'] <=> $b['popularity']);
+        } elseif ($sortBy === 'release_date.desc') {
+            usort($movies, fn($a, $b) => strtotime($b['release_date']) <=> strtotime($a['release_date']));
+        } elseif ($sortBy === 'release_date.asc') {
+            usort($movies, fn($a, $b) => strtotime($a['release_date']) <=> strtotime($b['release_date']));
+        }
         return $movies;
     }
 

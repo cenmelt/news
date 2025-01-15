@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MovieWatched;
 use App\Service\TmdbService;
 use App\Repository\MovieWatchedRepository;
+use App\Service\MovieFilter;
 
 
 class MovieController extends AbstractController
@@ -33,29 +34,35 @@ class MovieController extends AbstractController
     
         $query = $request->query->get('query');
         $sortBy = $request->query->get('sort_by', 'popularity.desc'); 
-        $year = $request->query->get('year'); 
-        $year2 = $request->query->get('year2'); 
+        $yearFrom = $request->query->get('yearFrom'); 
+        $yearTo = $request->query->get('yearTo'); 
 
         $genre = $request->query->get('genre');
 
         $genres = $this->tmdbService->getGenres();
 
-        if(is_string($year))
+        if(is_string($yearFrom))
         {
-            $year = intval($year);
+            $yearFrom = intval($yearFrom);
         }
 
         if (is_string($genre)) {
             $genre = intval($genre);
         }
 
-        if(is_string($year2))
+        if(is_string($yearTo))
         {
-            $year2 = intval($year2);
+            $yearTo = intval($yearTo);
         }
 
+        $filter = new MovieFilter(
+            yearFrom: $yearFrom,
+            yearTo: $yearTo,
+            genre: $genre, 
+            sortBy: $sortBy
+        );
 
-        $movies = $query ? $this->tmdbService->searchMovies($query, $sortBy, $year, $year2, $genre) : [];
+        $movies = $query ? $this->tmdbService->searchMovies($query, $filter) : [];
 
         $watchedMovieIds = $movieWatchedRepository->findMovieIdsByUser($user);
 
@@ -68,8 +75,8 @@ class MovieController extends AbstractController
             'query' => $query,
             'sort_by' => $sortBy,
             'genres' => $genres,
-            'year' => $year,
-            'year2' => $year2,
+            'yearFrom' => $yearFrom,
+            'yearTo' => $yearTo,
             'selected_genre' => $genre
         ]);
     }
@@ -107,9 +114,6 @@ class MovieController extends AbstractController
 
         return $this->redirectToRoute('movie_search');
     }
-
-
-
 
 
     #[Route('/watched', name: 'movie_watched_list')]
