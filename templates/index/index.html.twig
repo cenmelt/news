@@ -1,29 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}WatchThis{% endblock %}
+{% block title %}{{ 'WatchThis'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
+{% endblock %}
 
 {% block body %}
 <main>
     <section class="hero">
-        <h1>Bienvenue sur WatchThis</h1>
-        <p>Découvrez tous les films, les plus récents et les plus populaires.</p>
+        <h1 class="hero-title">{{ 'Bienvenue sur WatchThis'|trans }}</h1>
+        <p class="hero-subtitle">{{ 'Découvrez tous les films, les plus récents et les plus populaires.'|trans }}</p>
     </section>
     <section class="most-viewed">
-        <h2>Les films les plus vus du moment</h2>
+        <h2 class="section-title">{{ 'Les films les plus vus du moment'|trans }}</h2>
         <div class="movies-grid">
             {% for movie in mostViewedMovies %}
                 <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    <h3>{{ movie.title }}</h3>
-                    <p> Release date : {{ movie.release_date }} </p>
-                    <p>{{ movie.overview | slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('movie_details', { id: movie.id }) }}" style="padding: 10px 20px; background-color: #f90; color: white; text-decoration: none; border-radius: 5px;">Film details</a>                          
+                    <img src="https://image.tmdb.org/t/p/w200{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster">
+                    <h3 class="movie-title">{{ movie.title }}</h3>
+                    <p class="movie-release-date">{{ 'Release date:'|trans }} {{ movie.release_date }}</p>
+                    <p class="movie-overview">{{ movie.overview | slice(0, 100) ~ '...' }}</p>
+                    <a href="{{ path('movie_details', { id: movie.id }) }}" class="btn-primary">{{ 'Film details'|trans }}</a>                          
                 </div>
             {% else %}
-                <p>Aucun film disponible pour l'instant.</p>
+                <p class="no-movies-message">{{ "Aucun film disponible pour l'instant."|trans }}</p>
             {% endfor %}
         </div>
     </section>
 </main>
-
 {% endblock %}
