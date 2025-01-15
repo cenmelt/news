@@ -1,50 +1,50 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link 
-            rel="icon" 
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22>
-                <text y=%221.2em%22 font-size=%2296%22>⚫️</text>
-                <text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text>
-            </svg>"
-        >
-        {% block stylesheets %}
-        {% endblock %}
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body class="light-body">
-        {% if app.request.attributes.get('_route') not in ['app_login', 'app_mailPass'] %}
-            <header class="light-header">
-                <div class="light-container">
-                    <div class="light-logo">
-                        <a href="{{ path('app_index') }}" class="light-logo-link">WatchThis</a>
-                    </div>
-                    <nav class="light-nav">
-                        <ul class="light-menu">
-                            <li><a href="{{ path('app_index') }}" class="light-menu-item">Home</a></li>
-                            <li><a href="{{ path('movie_watched_list') }}" class="light-menu-item">Vos films vus</a></li>
-                            <li><a href="{{ path('movie_timeline') }}" class="light-menu-item">Movie Timeline</a></li>
-                            <li><a href="{{ path('movie_search') }}" class="light-menu-item">Film Search</a></li>
-                        </ul>
-                    </nav>
-                    <div class="light-auth-buttons">
-                        {% if app.user %}
-                            <a href="{{ path('app_logout') }}" class="light-button">Sign out</a>
-                        {% else %}
-                            <a href="{{ path('app_login') }}" class="light-button">Sign in</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </header>
-        {% endif %}
-
-        <main class="light-main">
-            {% block body %}
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>{% block title %}Welcome!{% endblock %}</title>
+            <link 
+                rel="icon" 
+                href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22>
+                    <text y=%221.2em%22 font-size=%2296%22>⚫️</text>
+                    <text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text>
+                </svg>"
+            >
+            {% block stylesheets %}
             {% endblock %}
-        </main>
-    </body>
-</html>
+            {% block javascripts %}
+                {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {% endblock %}
+        </head>
+        <body class="light-body">
+            {% if app.request.attributes.get('_route') not in ['app_login', 'app_mailPass'] %}
+                <header class="light-header">
+                    <div class="light-container">
+                        <div class="light-logo">
+                            <a href="{{ path('app_index') }}" class="light-logo-link">WatchThis</a>
+                        </div>
+                        <nav class="light-nav">
+                            <ul class="light-menu">
+                                <li><a href="{{ path('app_index') }}" class="light-menu-item">Home</a></li>
+                                <li><a href="{{ path('movie_watched_list') }}" class="light-menu-item">Your Watched Movies</a></li>
+                                <li><a href="{{ path('movie_timeline') }}" class="light-menu-item">Movie Timeline</a></li>
+                                <li><a href="{{ path('movie_search') }}" class="light-menu-item">Movie Search</a></li>
+                            </ul>
+                        </nav>
+                        <div class="light-auth-buttons">
+                            {% if app.user %}
+                                <a href="{{ path('app_logout') }}" class="light-button">Sign out</a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}" class="light-button">Sign in</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </header>
+            {% endif %}
+
+            <main class="light-main">
+                {% block body %}
+                {% endblock %}
+            </main>
+        </body>
+    </html>

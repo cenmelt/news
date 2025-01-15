@@ -10,11 +10,11 @@
 {% block body %}
 <main class="index-main">
     <section class="index-hero">
-        <h1 class="index-hero-title">{{ 'Bienvenue sur WatchThis'|trans }}</h1>
-        <p class="index-hero-subtitle">{{ 'Découvrez tous les films, les plus récents et les plus populaires.'|trans }}</p>
+        <h1 class="index-hero-title">{{ 'Welcome to WatchThis'|trans }}</h1>
+        <p class="index-hero-subtitle">{{ 'Discover all the movies, the latest and the most popular.'|trans }}</p>
     </section>
     <section class="index-most-viewed">
-        <h2 class="index-section-title">{{ 'Les films les plus vus du moment'|trans }}</h2>
+        <h2 class="index-section-title">{{ 'Most Viewed Movies'|trans }}</h2>
         <div class="index-movies-grid">
             {% for movie in mostViewedMovies %}
                 <div class="index-movie-card">
@@ -22,18 +22,18 @@
                     <h3 class="index-movie-title">{{ movie.title }}</h3>
                     <p class="index-movie-release-date">{{ 'Release date:'|trans }} {{ movie.release_date }}</p>
                     <p class="index-movie-overview">{{ movie.overview | slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('movie_details', { id: movie.id, page: currentPage}) }}" class="index-btn-primary">{{ 'Film details'|trans }}</a>                          
+                    <a href="{{ path('movie_details', { id: movie.id, page: currentPage}) }}" class="index-btn-primary">{{ 'Movie details'|trans }}</a>                          
                 </div>
             {% else %}
-                <p class="index-no-movies-message">{{ "Aucun film disponible pour l'instant."|trans }}</p>
+                <p class="index-no-movies-message">{{ "No movies available at the moment."|trans }}</p>
             {% endfor %}
         </div>
     </section>
     <div class="pagination">
     {% if currentPage > 1 %}
-        <a href="{{ path('app_index', ({'page': currentPage - 1})) }}" class="pagination__prev">Précédent</a>
+        <a href="{{ path('app_index', ({'page': currentPage - 1})) }}" class="pagination__prev">Previous</a>
     {% else %}
-        <span class="pagination__prev pagination__disabled">Précédent</span>
+        <span class="pagination__prev pagination__disabled">Previous</span>
     {% endif %}
 
     {% for page in 1..totalPages %}
@@ -44,11 +44,11 @@
         {% endif %}
     {% endfor %}
 
-    {# Bouton suivant #}
+    {# Next button #}
     {% if currentPage < totalPages %}
-        <a href="{{ path('app_index', ({'page': currentPage + 1})) }}" class="pagination__next">Suivant</a>
+        <a href="{{ path('app_index', ({'page': currentPage + 1})) }}" class="pagination__next">Next</a>
     {% else %}
-        <span class="pagination__next pagination__disabled">Suivant</span>
+        <span class="pagination__next pagination__disabled">Next</span>
     {% endif %}
 </main>
 {% endblock %}
