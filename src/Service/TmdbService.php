@@ -12,7 +12,7 @@ class TmdbService
     public function __construct(private HttpClientInterface $client, private string $apiKey)
     {}
 
-    public function searchMovies(string $query, MovieFilterService $filter): array
+    public function searchMovies(string $query, MovieFilterService $filter, int $page = 1): array
     {
         $response = $this->client->request(
             'GET',
@@ -21,19 +21,20 @@ class TmdbService
                 'query' => [
                     'api_key' => $this->apiKey,
                     'query' => $query,
+                    'page' => $page
                 ],
             ]
         );
 
-        $movies = $response->toArray()['results'] ?? [];
-
-        $movies = MovieProcessorService::filterByYear($movies, $filter->getYearFrom(), $filter->getYearTo());
-        
+        $movies = MovieProcessorService::filterByYear($response->toArray()['results'], $filter->getYearFrom(), $filter->getYearTo());
         $movies = MovieProcessorService::filterByGenre($movies, $filter->getGenre());
-
         MovieProcessorService::sortMovies($movies, $filter->getSortBy());
 
-        return $movies;
+        return [
+            'movies' => $movies,
+            'total_pages' => $response->toArray()['total_pages'],
+            'page' => $response->toArray()['page']
+            ];
     }
 
     public function trendingMovies(): array
