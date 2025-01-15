@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class MovieFilter
+class MovieFilterService
 {
     private ?int $yearFrom;
     private ?int $yearTo;
@@ -41,21 +41,32 @@ class MovieFilter
 
     public function setYearFrom(?int $yearFrom): void
     {
-        $this->yearFrom = $yearFrom;
+        $this->yearFrom = $yearFrom === 0 ? null : $yearFrom;
+        $this->syncYears();
     }
 
-    public function SetYearTo(?int $yearTo): void
+    public function setYearTo(?int $yearTo): void
     {
-        $this->yearTo = $yearTo;
+        $this->yearTo = $yearTo === 0 ? null : $yearTo;
+        $this->syncYears();
     }
 
-    public function SetGenre(?int $genre): void
+    public function setGenre(?int $genre): void
     {
-        $this->genre = $genre;
+        $this->genre = $genre === 0 ? null : $genre;
     }
 
     public function SetSortBy(string $sortBy): void 
     {
         $this->sortBy = $sortBy;
+    }
+
+    private function syncYears(): void
+    {
+        if ($this->yearFrom !== null && $this->yearTo === null) {
+            $this->yearTo = $this->yearFrom;
+        } elseif ($this->yearTo !== null && $this->yearFrom === null) {
+            $this->yearFrom = $this->yearTo;
+        }
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\MovieWatched;
 use App\Service\TmdbService;
 use App\Repository\MovieWatchedRepository;
-use App\Service\MovieFilter;
+use App\Service\MovieFilterService;
 
 
 class MovieController extends AbstractController
@@ -33,7 +33,6 @@ class MovieController extends AbstractController
         }
     
         $query = $request->query->get('query');
-        $sortBy = $request->query->get('sort_by', 'popularity.desc'); 
         $yearFrom = $request->query->get('yearFrom'); 
         $yearTo = $request->query->get('yearTo'); 
 
@@ -55,12 +54,12 @@ class MovieController extends AbstractController
             $yearTo = intval($yearTo);
         }
 
-        $filter = new MovieFilter(
-            yearFrom: $yearFrom,
-            yearTo: $yearTo,
-            genre: $genre, 
-            sortBy: $sortBy
-        );
+        $filter = new MovieFilterService();
+        $filter->SetGenre($genre);
+        $filter->SetYearFrom($yearFrom);
+        $filter->SetYearTo($yearTo);
+        $filter->SetSortBy($request->query->get('sort_by', 'popularity.desc'));
+
 
         $movies = $query ? $this->tmdbService->searchMovies($query, $filter) : [];
 
@@ -73,7 +72,7 @@ class MovieController extends AbstractController
         return $this->render('movie/search.html.twig', [
             'movies' => $movies ?? [],
             'query' => $query,
-            'sort_by' => $sortBy,
+            'sort_by' => $request->query->get('sort_by', 'popularity.desc'),
             'genres' => $genres,
             'yearFrom' => $yearFrom,
             'yearTo' => $yearTo,
