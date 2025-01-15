@@ -29,14 +29,6 @@ class MovieController extends AbstractController
         return is_string($value) ? (int) $value : $value;
     }
 
-    private function getPaginationInfo(array $movies): array
-    {
-        return [
-            'totalPages' => $movies['total_pages'] ?? 0,
-            'currentPage' => $movies['page'] ?? 1,
-        ];
-    }
-
     private function markWatchedMovies(array $movies, array $watchedMovieIds): array
     {
         foreach ($movies as &$movie) {
@@ -58,13 +50,6 @@ class MovieController extends AbstractController
         $yearFrom = $this->normalizeInteger($request->query->get('yearFrom'));
         $yearTo = $this->normalizeInteger($request->query->get('yearTo'));
         $genre = $this->normalizeInteger($request->query->get('genre'));
-
-        $page = $request->query->get('page');
-
-        if($page == null)
-        {
-            $page = 1;
-        }
     
         $genres = $this->tmdbService->getGenres();
     
@@ -74,14 +59,13 @@ class MovieController extends AbstractController
         $filter->SetYearTo($yearTo);
         $filter->SetSortBy($request->query->get('sort_by', 'popularity.desc'));
     
-        $movies = $query ? $this->tmdbService->searchMovies($query, $filter, $page) : [];
+        $movies = $query ? $this->tmdbService->searchMovies($query, $filter) : [];
         $watchedMovieIds = $movieWatchedRepository->findMovieIdsByUser($user);
     
         if (!empty($movies['movies'])) {
             $movies['movies'] = $this->markWatchedMovies($movies['movies'], $watchedMovieIds);
         }
-    
-        $pagination = $this->getPaginationInfo($movies);
+
     
         return $this->render('movie/search.html.twig', [
             'movies' => $movies['movies'] ?? [],
@@ -92,8 +76,6 @@ class MovieController extends AbstractController
             'yearFrom' => $yearFrom,
             'yearTo' => $yearTo,
             'selected_genre' => $genre,
-            'totalPages' => $pagination['totalPages'],
-            'currentPage' => $pagination['currentPage'],
         ]);
     }
     
@@ -135,11 +117,20 @@ class MovieController extends AbstractController
             'yearTo' => $request->query->get('yearTo'),
             'genre' => $request->query->get('genre'),
             'sort_by' => $request->query->get('sort_by', 'popularity.desc'),
-            'page' => $request->query->get('page'),
         ]);
            
     }
 
+    #[Route('/movie/remove/{id}', name: 'movie_remove', methods: ['POST'])]
+    public function removeMovie(int $id, MovieWatchedRepository $movieRepository): Response
+    {
+        $movie = $movieRepository->find($id);
+        if ($movie) {
+            $movieRepository->remove($movie, true);
+        }
+
+        return $this->redirectToRoute('movie_watched_list');
+    }
 
     #[Route('/watched', name: 'movie_watched_list')]
     public function watchedList(): Response

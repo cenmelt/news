@@ -39,18 +39,20 @@ class TmdbService
             'page' => $data['page'],
         ];
     }
-
-    /**
-     * Fetch trending movies for the day.
-     */
-    public function trendingMovies(): array
+  
+    public function trendingMovies(int $page): array
     {
         $endpoint = "{$this->apiBase}/trending/movie/day";
-        $response = $this->client->request('GET', $endpoint, [
-            'query' => [
-                'api_key' => $this->apiKey,
-            ],
-        ]);
+        $response = $this->client->request(
+            'GET',
+            $endpoint,
+            [
+                'query' => [
+                    'api_key' => $this->apiKey,
+                    'page' => $page
+                ],
+            ]
+        );
 
         return $response->toArray();
     }

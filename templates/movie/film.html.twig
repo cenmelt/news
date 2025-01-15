@@ -27,7 +27,7 @@
     </div>
 
     <div class="details-actions">
-        <a href="{{ path('app_index') }}" class="details-btn">{{ 'Back to Home'|trans }}</a>
+        <a href="{{ path('app_index', {page: currentPage}) }}" class="details-btn">{{ 'Back to Home'|trans }}</a>
         {% if app.user and not movieAlreadyWatched %}
             <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}" 
                class="details-btn">{{ 'Mark as watched'|trans }}</a>
