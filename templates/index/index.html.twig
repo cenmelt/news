@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -21,12 +22,33 @@
                     <h3 class="index-movie-title">{{ movie.title }}</h3>
                     <p class="index-movie-release-date">{{ 'Release date:'|trans }} {{ movie.release_date }}</p>
                     <p class="index-movie-overview">{{ movie.overview | slice(0, 100) ~ '...' }}</p>
-                    <a href="{{ path('movie_details', { id: movie.id }) }}" class="index-btn-primary">{{ 'Film details'|trans }}</a>                          
+                    <a href="{{ path('movie_details', { id: movie.id, page: currentPage}) }}" class="index-btn-primary">{{ 'Film details'|trans }}</a>                          
                 </div>
             {% else %}
                 <p class="index-no-movies-message">{{ "Aucun film disponible pour l'instant."|trans }}</p>
             {% endfor %}
         </div>
     </section>
+    <div class="pagination">
+    {% if currentPage > 1 %}
+        <a href="{{ path('app_index', ({'page': currentPage - 1})) }}" class="pagination__prev">Précédent</a>
+    {% else %}
+        <span class="pagination__prev pagination__disabled">Précédent</span>
+    {% endif %}
+
+    {% for page in 1..totalPages %}
+        {% if page == currentPage %}
+            <span class="pagination__current">{{ page }}</span>
+        {% else %}
+            <a href="{{ path('app_index', ({'page': page})) }}" class="pagination__link">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {# Bouton suivant #}
+    {% if currentPage < totalPages %}
+        <a href="{{ path('app_index', ({'page': currentPage + 1})) }}" class="pagination__next">Suivant</a>
+    {% else %}
+        <span class="pagination__next pagination__disabled">Suivant</span>
+    {% endif %}
 </main>
 {% endblock %}

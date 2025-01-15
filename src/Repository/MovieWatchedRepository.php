@@ -26,4 +26,15 @@ class MovieWatchedRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleColumnResult();
     }
+
+    public function remove(MovieWatched $movie, bool $flush = true): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $entityManager->remove($movie);
+
+        if ($flush) {
+            $entityManager->flush();
+        }
+    }
 }
