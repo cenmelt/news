@@ -37,7 +37,7 @@ class TmdbService
             ];
     }
 
-    public function trendingMovies(): array
+    public function trendingMovies(int $page): array
     {
         $response = $this->client->request(
             'GET',
@@ -45,6 +45,7 @@ class TmdbService
             [
                 'query' => [
                     'api_key' => $this->apiKey,
+                    'page' => $page
                 ],
             ]
         );

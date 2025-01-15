@@ -15,6 +15,11 @@
                 <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="watched-poster">
                 <div class="watched-details">
                     <strong class="watched-movie-title">{{ movie.title }}</strong>
+                    <form action="{{ path('movie_remove', { 'id': movie.id }) }}" method="POST" class="delete-form">
+                        <button type="submit" class="delete-btn" aria-label="{{ 'Remove this movie'|trans }}">
+                            &times; 
+                        </button>
+                    </form>
                 </div>
             </li>
         {% endfor %}
