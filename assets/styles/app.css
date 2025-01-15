@@ -1,73 +1,72 @@
 /* General Styles */
-.light-body {
+body.light-body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    padding: 0;
+    font-family: 'Roboto', Arial, sans-serif;
     background-color: #f9f9f9;
     color: #333;
-    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Header */
-.light-header {
-    background-color: #fff;
-    border-bottom: 1px solid #e5e5e5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Header Styles */
+header.light-header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #ececec;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 0;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 10;
 }
 
 .light-container {
+    max-width: auto;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
 /* Logo */
-.light-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
 .light-logo-link {
+    font-size: 1.8rem;
+    font-weight: 700;
     text-decoration: none;
-    color: #ff6600; /* Bright orange accent for logo */
-    transition: color 0.3s ease;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.light-logo-link:hover {
-    color: #ff4500;
-}
-
-/* Navigation Menu */
+/* Navigation */
 .light-nav {
-    flex-grow: 1;
-    margin-left: 2rem;
+    display: flex;
+    align-items: center;
 }
 
 .light-menu {
-    list-style: none;
     display: flex;
     gap: 1.5rem;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
 .light-menu-item {
     text-decoration: none;
-    color: #333;
     font-weight: 500;
+    font-size: 1rem;
+    color: #2c3e50;
     padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .light-menu-item:hover {
-    background-color: #ff6600; /* Orange hover effect */
-    color: #fff;
+    background-color: #2c3e50;
+    color: #ffffff;
 }
 
 /* Auth Buttons */
@@ -78,38 +77,56 @@
 
 .light-button {
     text-decoration: none;
-    color: #fff;
-    background-color: #ff6600;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+    color: #ffffff;
+    background-color: #2c3e50;
+    border-radius: 6px;
     transition: background-color 0.3s ease;
 }
 
 .light-button:hover {
-    background-color: #ff4500;
+    background-color: #1abc9c;
 }
 
 /* Main Content */
-.light-main {
+main.light-main {
+    flex: 1;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .light-container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+/* Footer (Optional) */
+footer.light-footer {
+    background-color: #ffffff;
+    border-top: 2px solid #ececec;
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
 
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
     .light-menu {
         flex-direction: column;
         gap: 1rem;
     }
 
-    .light-auth-buttons {
-        margin-top: 1rem;
+    .light-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    header.light-header {
+        padding: 1rem 0;
     }
 }

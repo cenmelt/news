@@ -194,8 +194,5 @@ class MovieController extends AbstractController
             'movies' => $movies,
             'query' => $query,
         ]);
-    }
-
-
-    
+    }   
 }

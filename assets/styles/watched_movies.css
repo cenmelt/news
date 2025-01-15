@@ -1,90 +1,132 @@
-/* Conteneur principal */
-.watched-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f9;
-    border-radius: 8px;
+/* General Styles */
+body {
+    font-family: 'Comic Sans MS', 'Poppins', sans-serif; /* Funky font */
+    margin: 0;
+    background: linear-gradient(135deg, #ff9f1c, #ff6f61);
+    color: #333;
 }
 
-/* Titre principal */
-.watched-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+/* Container */
+.watched-container {
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 5px dotted #ff6f61; /* Funky dotted border */
     text-align: center;
 }
 
-/* Grille pour les films */
+/* Title */
+.watched-title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #6a0572;
+    letter-spacing: 3px;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px #fcbf49;
+    animation: bounce 2s infinite; /* Funky bounce effect */
+}
+
+/* Movie List */
 .watched-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
     margin: 0;
+    padding: 0;
     list-style: none;
 }
 
-/* Style pour chaque élément de film */
 .watched-item {
+    background: linear-gradient(135deg, #f77f00, #ff9f1c);
+    border-radius: 15px;
+    overflow: hidden;
+    width: 300px;
+    height: auto;
     position: relative;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    overflow: hidden; /* S'assure que tout dépassement est masqué */
+    transform: rotate(-2deg); /* Funky tilt */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 .watched-item:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Image du film */
+/* Poster with Button on Top Right */
 .watched-poster {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 4px;
+    height: auto;
+    display: block;
+    border-bottom: 4px solid #6a0572;
+    position: relative;
 }
 
-/* Détails du film */
-.watched-details {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.delete-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
 }
 
-.watched-movie-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-    line-height: 1.4;
-    flex: 1;
-}
-
-/* Bouton de suppression à côté du titre */
 .delete-btn {
-    background-color: transparent;
+    background-color: #d72638;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     border: none;
-    width: 30px;
-    color: #e74c3c;
-    font-size: 24px;
     cursor: pointer;
-    padding: 0;
-    transition: transform 0.2s ease, color 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .delete-btn:hover {
-    color: #c0392b;
-    transform: scale(1.2);
+    background-color: #ff6f61;
+    transform: scale(1.2) rotate(10deg); /* Funky hover effect */
 }
 
-/* Formulaire de suppression */
-.delete-form {
-    margin: 0;
-    padding: 0;
+.delete-btn:focus {
+    outline: 3px solid #ff9f1c;
+    outline-offset: 2px;
+}
+
+/* Movie Details */
+.watched-details {
+    text-align: center;
+    padding: 1rem;
+}
+
+.watched-movie-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 1px 1px #6a0572;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .watched-list {
+        flex-direction: column;
+    }
+
+    .watched-item {
+        width: 100%;
+    }
+}
+
+/* Funky Title Animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
