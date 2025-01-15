@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/search_movies.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/pagination.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -63,7 +64,7 @@
                         {% if movie.alreadyWatched %}
                             <span class="movie-watched">{{ 'Already Watched'|trans }}</span>
                         {% else %}
-                            <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path }) }}"
+                            <a href="{{ path('movie_watched_add', { id: movie.id, title: movie.title, poster_path: movie.poster_path, query: query, yearFrom: yearFrom, yearTo:yearTo, sort_by:sort_by, page: currentPage, genre: selected_genre }) }}"
                                class="btn-watch">{{ 'Mark as watched'|trans }}</a>
                         {% endif %}
                     </div>
@@ -73,5 +74,30 @@
     {% else %}
         <p class="no-movies-message">{{ 'No movies found. Try searching for something else.'|trans }}</p>
     {% endif %}
+    {% if movies %}
+        <div class="pagination">
+        {% if currentPage > 1 %}
+            <a href="{{ path('movie_search', (currentQuery ?? {})|merge({'page': currentPage - 1})) }}" class="pagination__prev">Précédent</a>
+        {% else %}
+            <span class="pagination__prev pagination__disabled">Précédent</span>
+        {% endif %}
+
+        {% for page in 1..totalPages %}
+            {% if page == currentPage %}
+                <span class="pagination__current">{{ page }}</span>
+            {% else %}
+                <a href="{{ path('movie_search', (currentQuery ?? {})|merge({'page': page})) }}" class="pagination__link">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {# Bouton suivant #}
+        {% if currentPage < totalPages %}
+            <a href="{{ path('movie_search', (currentQuery ?? {})|merge({'page': currentPage + 1})) }}" class="pagination__next">Suivant</a>
+        {% else %}
+            <span class="pagination__next pagination__disabled">Suivant</span>
+        {% endif %}
+    {% endif %}
+</div>
+
 </div>
 {% endblock %}

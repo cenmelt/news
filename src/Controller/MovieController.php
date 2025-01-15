@@ -24,6 +24,27 @@ class MovieController extends AbstractController
         $this->em = $em;
     }
 
+    private function normalizeInteger(?string $value): ?int
+    {
+        return is_string($value) ? (int) $value : $value;
+    }
+
+    private function getPaginationInfo(array $movies): array
+    {
+        return [
+            'totalPages' => $movies['total_pages'] ?? 0,
+            'currentPage' => $movies['page'] ?? 1,
+        ];
+    }
+
+    private function markWatchedMovies(array $movies, array $watchedMovieIds): array
+    {
+        foreach ($movies as &$movie) {
+            $movie['alreadyWatched'] = in_array($movie['id'], $watchedMovieIds);
+        }
+        return $movies;
+    }
+
     #[Route('/search', name: 'movie_search')]
     public function search(Request $request, MovieWatchedRepository $movieWatchedRepository): Response
     {
@@ -33,52 +54,49 @@ class MovieController extends AbstractController
         }
     
         $query = $request->query->get('query');
-        $yearFrom = $request->query->get('yearFrom'); 
-        $yearTo = $request->query->get('yearTo'); 
+        $currentQuery = $request->query->all();
+        $yearFrom = $this->normalizeInteger($request->query->get('yearFrom'));
+        $yearTo = $this->normalizeInteger($request->query->get('yearTo'));
+        $genre = $this->normalizeInteger($request->query->get('genre'));
 
-        $genre = $request->query->get('genre');
+        $page = $request->query->get('page');
 
+        if($page == null)
+        {
+            $page = 1;
+        }
+    
         $genres = $this->tmdbService->getGenres();
-
-        if(is_string($yearFrom))
-        {
-            $yearFrom = intval($yearFrom);
-        }
-
-        if (is_string($genre)) {
-            $genre = intval($genre);
-        }
-
-        if(is_string($yearTo))
-        {
-            $yearTo = intval($yearTo);
-        }
-
+    
         $filter = new MovieFilterService();
         $filter->SetGenre($genre);
         $filter->SetYearFrom($yearFrom);
         $filter->SetYearTo($yearTo);
         $filter->SetSortBy($request->query->get('sort_by', 'popularity.desc'));
-
-
-        $movies = $query ? $this->tmdbService->searchMovies($query, $filter) : [];
-
+    
+        $movies = $query ? $this->tmdbService->searchMovies($query, $filter, $page) : [];
         $watchedMovieIds = $movieWatchedRepository->findMovieIdsByUser($user);
-
-        foreach ($movies as &$movie) {
-            $movie['alreadyWatched'] = in_array($movie['id'], $watchedMovieIds);
+    
+        if (!empty($movies['movies'])) {
+            $movies['movies'] = $this->markWatchedMovies($movies['movies'], $watchedMovieIds);
         }
     
+        $pagination = $this->getPaginationInfo($movies);
+    
         return $this->render('movie/search.html.twig', [
-            'movies' => $movies ?? [],
+            'movies' => $movies['movies'] ?? [],
             'query' => $query,
+            'currentQuery' => $currentQuery,
             'sort_by' => $request->query->get('sort_by', 'popularity.desc'),
             'genres' => $genres,
             'yearFrom' => $yearFrom,
             'yearTo' => $yearTo,
-            'selected_genre' => $genre
+            'selected_genre' => $genre,
+            'totalPages' => $pagination['totalPages'],
+            'currentPage' => $pagination['currentPage'],
         ]);
     }
+    
 
     #[Route('/watched/add/{id}', name: 'movie_watched_add')]
     public function addToWatchedList(int $id, Request $request): Response
@@ -111,7 +129,15 @@ class MovieController extends AbstractController
         $this->em->persist($movie);
         $this->em->flush();
 
-        return $this->redirectToRoute('movie_search');
+        return $this->redirectToRoute('movie_search', [
+            'query' => $request->query->get('query'),
+            'yearFrom' => $request->query->get('yearFrom'),
+            'yearTo' => $request->query->get('yearTo'),
+            'genre' => $request->query->get('genre'),
+            'sort_by' => $request->query->get('sort_by', 'popularity.desc'),
+            'page' => $request->query->get('page'),
+        ]);
+           
     }
 
 
