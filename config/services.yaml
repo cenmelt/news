@@ -30,6 +30,14 @@ services:
 
     App\Service\MovieFilterService: ~
 
+# config/services.yaml
+parameters:
+    tmdb.image_base: '%env(TMDB_IMAGE_BASE)%'
+
+twig:
+    globals:
+        tmdb_image_base: '%tmdb.image_base%'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

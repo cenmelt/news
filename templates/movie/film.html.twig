@@ -11,7 +11,7 @@
     <h1 class="details-title">{{ movie.title }}</h1>
     
     <div class="details-content">
-        <img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}" alt="{{ movie.title }}" class="details-poster">
+        <img src="{{ tmdb_image_base }}{{ movie.poster_path }}" alt="{{ movie.title }}" class="details-poster">
         
         <div class="details-info">
             <p><strong>{{ 'Release Date:'|trans }}</strong> {{ movie.release_date }}</p>

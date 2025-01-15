@@ -12,7 +12,7 @@
     <ul class="watched-list">
         {% for movie in movies %}
             <li class="watched-item">
-                <img src="https://image.tmdb.org/t/p/w200{{ movie.posterPath }}" alt="{{ movie.title }}" class="watched-poster">
+                <img src="{{ tmdb_image_base }}{{ movie.posterPath }}" alt="{{ movie.title }}" class="watched-poster">
                 <div class="watched-details">
                     <strong class="watched-movie-title">{{ movie.title }}</strong>
                 </div>
