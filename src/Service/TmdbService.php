@@ -3,13 +3,16 @@
 namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Service\MovieProcessorService;
+
+
 
 class TmdbService
 {
     public function __construct(private HttpClientInterface $client, private string $apiKey)
     {}
 
-    public function searchMovies(string $query, MovieFilter $filter): array
+    public function searchMovies(string $query, MovieFilterService $filter): array
     {
         $response = $this->client->request(
             'GET',
@@ -24,45 +27,12 @@ class TmdbService
 
         $movies = $response->toArray()['results'] ?? [];
 
-        $yearFrom = $filter->getYearFrom();
-        $yearTo = $filter->getYearTo();
-        $genre = $filter->getGenre();
-        $sortBy = $filter->getSortBy();
+        $movies = MovieProcessorService::filterByYear($movies, $filter->getYearFrom(), $filter->getYearTo());
+        
+        $movies = MovieProcessorService::filterByGenre($movies, $filter->getGenre());
 
-        if ($yearFrom === 0) {
-            $yearFrom = $yearTo;
-        }
+        MovieProcessorService::sortMovies($movies, $filter->getSortBy());
 
-        if ($genre === 0) {
-            $genre = null;
-        }
-
-        if ($yearTo === 0) {
-            $yearTo = $yearFrom;
-        }
-
-        if ($yearFrom && $yearTo) {
-            $movies = array_filter($movies, function ($movie) use ($yearFrom, $yearTo) {
-                $movieYear = substr($movie['release_date'], 0, 4);
-                return $movieYear >= $yearFrom && $movieYear <= $yearTo;
-            });
-        }
-
-        if ($genre !== null) {
-            $movies = array_filter($movies, function ($movie) use ($genre) {
-                return in_array($genre, $movie['genre_ids']);
-            });
-        }
-
-        if ($sortBy === 'popularity.desc') {
-            usort($movies, fn($a, $b) => $b['popularity'] <=> $a['popularity']);
-        } elseif ($sortBy === 'popularity.asc') {
-            usort($movies, fn($a, $b) => $a['popularity'] <=> $b['popularity']);
-        } elseif ($sortBy === 'release_date.desc') {
-            usort($movies, fn($a, $b) => strtotime($b['release_date']) <=> strtotime($a['release_date']));
-        } elseif ($sortBy === 'release_date.asc') {
-            usort($movies, fn($a, $b) => strtotime($a['release_date']) <=> strtotime($b['release_date']));
-        }
         return $movies;
     }
 
